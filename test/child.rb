@@ -9,6 +9,10 @@ class TestChild < Minitest::Test
   def ch(x)
     n=C.new x
     assert_equal n.say('return 6*7'), {"ok"=>42}
+    assert_err n.say false    # Argument error
+    assert_err n.say '#'      # Syntax error
+    assert_err n.say 'none'   # Runtime error
+    assert_equal n.say('return Math.round(Math.PI)'), {'ok'=>3}
   end
 
   def test_n
