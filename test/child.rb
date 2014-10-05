@@ -1,6 +1,10 @@
-class TestV < Minitest::Test
+class TestChild < Minitest::Test
 
   C=ExecJS::Xtrn::Child
+
+  def assert_err(say)
+    assert say['err']
+  end
 
   def ch(x)
     n=C.new x
