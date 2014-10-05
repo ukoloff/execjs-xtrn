@@ -1,7 +1,8 @@
-class ExecJS::Xtrn::Engine
-  attr_reader :stdin, :stdout
+require 'json'
 
-  def spawn(options)
+class ExecJS::Xtrn::Child
+
+  def initialize(options)
     i=IO.pipe
     o=IO.pipe
 
@@ -15,13 +16,18 @@ class ExecJS::Xtrn::Engine
     @stdout=o[0]
   end
 
+  def say(obj)
+    @stdin.puts JSON.generate obj
+    JSON.load @stdout.gets
+  end
+
   Node={
     args: %w(node .),
     path: 'node',
   }
 
   Wsh={
-    args: %w(cscript //Nologo wsh.js),
+    args: %w(cscript //Nologo repl.js),
     path: 'wsh',
   }
 end

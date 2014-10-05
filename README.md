@@ -2,9 +2,9 @@
 
 Drop-in replacement for ExecJS with persistent external runtime.
 
-Not on MS Windows, you should instead use excellent `therubyracer` gem.
-
 This is just proof of concept, not suitable for production.
+
+Not on MS Windows, you should use excellent `therubyracer` gem instead.
 
 ## Installation
 

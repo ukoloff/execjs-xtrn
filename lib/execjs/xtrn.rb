@@ -1,2 +1,1 @@
-require_relative "xtrn/version"
-require_relative "xtrn/engine"
+require_relative "xtrn/module"
