@@ -4,7 +4,7 @@ class TestV < Minitest::Test
 
   def ch(x)
     n=C.new x
-    assert_equal '{"a":1,"b":2}', n.say(a:1, b:2)
+    assert_equal n.say('return 6*7'), {"ok"=>42}
   end
 
   def test_n

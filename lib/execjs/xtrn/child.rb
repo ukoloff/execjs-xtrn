@@ -17,7 +17,7 @@ class ExecJS::Xtrn::Child
   end
 
   def say(obj)
-    @stdin.puts JSON.generate obj
+    @stdin.puts JSON.dump obj
     JSON.load @stdout.gets
   end
 
