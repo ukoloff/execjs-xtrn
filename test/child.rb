@@ -51,19 +51,23 @@ class TestChild < Minitest::Test
     assert_err z.say false
   end
 
+  def children
+    [ExecJS::Xtrn::Node, ExecJS::Xtrn::Wsh].map do |klass|
+      klass::Valid ? ExecJS::Xtrn::Child.new(klass::Run) : nil
+    end
+  end
+
   def self.build
     n=0
     instance_methods(false).grep(/^shag_/).each do |m|
       Children.each_index  do |idx|
         define_method("test_#{n+=1}")do
+          @@children||=children
           child=@@children[idx]
           skip unless child
           send m, child
         end
       end
-    end
-    @@children=[ExecJS::Xtrn::Node, ExecJS::Xtrn::Wsh].map do |klass|
-      klass::Valid ? ExecJS::Xtrn::Child.new(klass::Run) : nil
     end
   end
 
