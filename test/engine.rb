@@ -12,7 +12,7 @@ class TestEngine < Minitest::Test
   end
 
   def test_call
-    assert_equal 3, @@x.call('Math.round', 3.14)
+    assert_equal 79, @@x.call('Math.max', 44, 27, 79, 73, 42, 4, 23, 24, 36, 13)
   end
 
 end
