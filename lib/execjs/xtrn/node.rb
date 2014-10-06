@@ -9,7 +9,6 @@ class ExecJS::Xtrn::Node
 
   def self.valid?
     i=Names.index do |n|
-      puts "Testing: #{n}"
       Run[:args][0]=n
       {"ok"=>42}==ExecJS::Xtrn::Child.new(Run).say('return 7*6') rescue nil
     end
