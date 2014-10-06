@@ -62,9 +62,7 @@ class TestChild < Minitest::Test
     instance_methods(false).grep(/^shag_/).each do |m|
       Children.each_index  do |idx|
         define_method("test_#{n+=1}")do
-          @@children||=children
-          child=@@children[idx]
-          skip unless child
+          skip unless child=(@@children||=children)[idx]
           send m, child
         end
       end
