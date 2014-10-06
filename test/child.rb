@@ -1,13 +1,12 @@
 class TestChild < Minitest::Test
 
-  C=ExecJS::Xtrn::Child
-
   def assert_err(say)
     assert say['err']
   end
 
-  def ch(x)
-    n=C.new x
+  def ch(klass)
+    skip unless klass::Valid
+    n=ExecJS::Xtrn::Child.new klass::Run
     assert_equal n.say('return 6*7'), {"ok"=>42}
     assert_err n.say false    # Argument error
     assert_err n.say '#'      # Syntax error
@@ -16,11 +15,11 @@ class TestChild < Minitest::Test
   end
 
   def test_n
-    ch C::Node
+    ch ExecJS::Xtrn::Node
   end
 
   def test_w
-    ch C::Wsh
+    ch ExecJS::Xtrn::Wsh
   end
 
 end

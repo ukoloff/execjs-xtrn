@@ -21,13 +21,4 @@ class ExecJS::Xtrn::Child
     JSON.load @stdout.gets
   end
 
-  Node={
-    args: %w(node .),
-    path: 'node',
-  }
-
-  Wsh={
-    args: %w(cscript //Nologo repl.js),
-    path: 'wsh',
-  }
 end
