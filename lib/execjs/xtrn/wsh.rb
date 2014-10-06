@@ -1,4 +1,4 @@
-class ExecJS::Xtrn::Wsh
+class ExecJS::Xtrn::Wsh < ExecJS::Xtrn::Engine
 
   Run={
     args: %w(cscript //Nologo //U repl.js),

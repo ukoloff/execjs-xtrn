@@ -1,4 +1,4 @@
-class ExecJS::Xtrn::Node
+class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
 
   Run={
     args: %w(? .),
