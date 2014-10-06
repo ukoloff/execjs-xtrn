@@ -52,9 +52,7 @@ class TestChild < Minitest::Test
   end
 
   def children
-    [ExecJS::Xtrn::Node, ExecJS::Xtrn::Wsh].map do |klass|
-      klass::Valid ? ExecJS::Xtrn::Child.new(klass::Run) : nil
-    end
+    Children.map{|k| k::Valid ? ExecJS::Xtrn::Child.new(k::Run) : nil }
   end
 
   def self.build
