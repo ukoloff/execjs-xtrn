@@ -14,6 +14,10 @@ class ExecJS::Xtrn::Child
     o[1].close
     @stdin=i[1]
     @stdout=o[0]
+    if options[:encoding]
+      @stdin.set_encoding options[:encoding]
+      @stdout.set_encoding options[:encoding]
+    end
   end
 
   def say(obj)
