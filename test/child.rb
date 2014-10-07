@@ -30,9 +30,7 @@ class TestChild < Minitest::Test
       for(i=0; i<s.length; i++) r.push(s.charCodeAt(i))
       return r
     EOJ
-  end
 
-  def shag_ltni
     assert_ok Chars, <<-EOJ
       c=#{Codes}
       s=''
