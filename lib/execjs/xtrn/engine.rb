@@ -12,7 +12,7 @@ class ExecJS::Xtrn::Engine
 
   def eval(code)
     return if (code=code.to_s.strip).length==0
-    exec "return eval(#{JSON.generate code, :quirks_mode => true})"
+    exec "return eval(#{JSON.generate([code])[1...-1]})"
   end
 
   def call(fn, *args)
