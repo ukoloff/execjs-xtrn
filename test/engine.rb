@@ -32,6 +32,16 @@ class TestEngine < Minitest::Test
     assert_equal 6, @class.eval('({x: 1+2+3}).x')
   end
 
+  def klas_compile
+    x=@class.compile <<-EOJ
+      inc = function(x)
+      {
+        return x+1
+      }
+    EOJ
+    assert_equal 6, x.call('inc', 5)
+  end
+
   def engines
     (1..Spawn).map do
       Engines.map{|k| k::Valid ? k.compile : nil }
