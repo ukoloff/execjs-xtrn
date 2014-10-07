@@ -4,7 +4,6 @@ rvm:
   - 2.0.0
   - 1.9.3
   - 1.9.2
-  - 1.8.7
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y npm

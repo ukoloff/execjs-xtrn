@@ -7,9 +7,9 @@ class ExecJS::Xtrn::Child
     o=IO.pipe
 
     @pid=spawn *options[:args],
-      :chdir=>File.expand_path("../../#{options[:path]}", __FILE__),
-      :in=>i[0],
-      :err=>o[1]
+      chdir: File.expand_path("../../#{options[:path]}", __FILE__),
+      in:    i[0],
+      err:   o[1]
     i[0].close
     o[1].close
     @stdin=i[1]

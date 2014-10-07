@@ -48,7 +48,7 @@ class TestChild < Minitest::Test
     assert_err '#'      # Syntax
     assert_err 'none'   # Runtime
     assert_err false    # Argument
-    assert_err :key=>2 # the same
+    assert_err key: 2   # the same
   end
 
   def shag_null

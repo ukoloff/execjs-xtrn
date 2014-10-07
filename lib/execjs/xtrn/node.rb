@@ -1,8 +1,8 @@
 class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
 
   Run={
-    :args=>%w(? .),
-    :path=>'node',
+    args: %w(? .),
+    path: 'node',
   }
 
   Names=%w(nodejs node)
