@@ -5,15 +5,18 @@ class TestChild < Minitest::Test
   Chars='Япония, 中华, Russia'
   Codes=[1071, 1087, 1086, 1085, 1080, 1103, 44, 32, 20013, 21326, 44, 32, 82, 117, 115, 115, 105, 97]
 
-  def assert_ok(result, code)
-    assert_equal @child.say(code), {'ok'=>result}
+  def say(code)
+    @child.say code
   end
 
-  def shag_everything
-    assert_ok 42, 'return 6*7'
+  def assert_ok(result, code)
+    r=say code
+    refute r.key? 'err'
+    assert_equal r, {'ok'=>result}
   end
 
   def shag_math
+    assert_ok 42, 'return 6*7'
     assert_ok 3, 'return Math.round(Math.PI)'
   end
 
@@ -36,19 +39,18 @@ class TestChild < Minitest::Test
   end
 
   def assert_err(code)
-    assert @child.say(code)['err']
+    assert say(code)['err']
   end
 
-  def shag_syntax_error
-    assert_err '#'
+  def shag_error
+    assert_err '#'      # Syntax
+    assert_err 'none'   # Runtime
+    assert_err false    # Argument
   end
 
-  def shag_runtime_error
-    assert_err 'none'
-  end
-
-  def shag_arg_error
-    assert_err false
+  def shag_null
+    assert_equal say(''), {}
+    assert_ok nil, 'return null'
   end
 
   def children
