@@ -1,5 +1,9 @@
 # ExecJS::Xtrn
 
+[![Build Status](https://travis-ci.org/ukoloff/execjs-xtrn.svg?branch=master)](https://travis-ci.org/ukoloff/execjs-xtrn)
+[![Gem Version](https://badge.fury.io/rb/execjs-xtrn.svg)](http://badge.fury.io/rb/execjs-xtrn)
+
+
 Drop-in replacement for ExecJS with persistent external runtime.
 
 This is just proof of concept, not suitable for production.
