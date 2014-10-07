@@ -5,16 +5,26 @@ class TestEngine < Minitest::Test
   Spawn=2
   Engines=[M::Node, M::Wsh]
 
-  def shag_exec
-    assert_equal 42, @engine.exec('return 6*7')
-  end
-
-  def shag_eval
-    assert_equal 42, @engine.eval('6*7')
-  end
-
-  def shag_call
+  def shag_methods
+    refute @engine.exec <<-EOJ
+      fib = function(n)
+      {
+        return n<2 ? 1 : fib(n-1)+fib(n-2)
+      }
+    EOJ
+    assert_equal 89, @engine.eval('fib(10)')
+    assert_equal 8,  @engine.call('fib', 5)
     assert_equal 79, @engine.call('Math.max', 44, 27, 79, 73, 42, 4, 23, 24, 36, 13)
+  end
+
+  def shag_vars
+    assert_raises(RuntimeError){ @engine.eval 'localVar' }
+    refute @engine.exec 'var localVar=1'
+    assert_raises(RuntimeError){ @engine.eval 'localVar' }
+
+    assert_raises(RuntimeError){ @engine.eval 'globalVar' }
+    refute @engine.exec "globalVar=#{v=rand 1000}"
+    assert_equal v, @engine.eval('globalVar')
   end
 
   def engines
