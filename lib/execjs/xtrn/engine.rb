@@ -19,6 +19,18 @@ class ExecJS::Xtrn::Engine
     eval "(#{fn}).apply(this, #{JSON.dump args})"
   end
 
+  def self.exec(code)
+    new.exec code
+  end
+
+  def self.eval(code)
+    new.eval code
+  end
+
+  def self.compile(code)
+    new.tap{|ctx| ctx.exec code}
+  end
+
   private
 
   def child
