@@ -27,9 +27,14 @@ class TestEngine < Minitest::Test
     assert_equal v, @engine.eval('globalVar')
   end
 
+  def klas_methods
+    assert_equal 4, @class.exec('return 2*2')
+    assert_equal 6, @class.eval('({x: 1+2+3}).x')
+  end
+
   def engines
     (1..Spawn).map do
-      Engines.map{|k| k::Valid ? k.new : nil }
+      Engines.map{|k| k::Valid ? k.compile : nil }
     end
   end
 
@@ -42,6 +47,16 @@ class TestEngine < Minitest::Test
             send m
           end
         end
+      end
+    end
+
+    instance_methods(false).grep(/^klas_/).each do |m|
+      Engines.each do |klass|
+          define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}_class")do
+            skip unless klass::Valid
+            @class=klass
+            send m
+          end
       end
     end
   end

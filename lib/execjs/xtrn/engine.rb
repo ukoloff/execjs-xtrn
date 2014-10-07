@@ -27,7 +27,7 @@ class ExecJS::Xtrn::Engine
     new.eval code
   end
 
-  def self.compile(code)
+  def self.compile(code='')
     new.tap{|ctx| ctx.exec code}
   end
 
