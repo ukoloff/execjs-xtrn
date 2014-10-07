@@ -1,6 +1,9 @@
 class TestChild < Minitest::Test
 
-  Children=[ExecJS::Xtrn::Node, ExecJS::Xtrn::Wsh]
+  M=ExecJS::Xtrn
+
+  Spawn=2
+  Children=[M::Node, M::Wsh]
 
   Chars='Япония, 中华, Russia'
   Codes=[1071, 1087, 1086, 1085, 1080, 1103, 44, 32, 20013, 21326, 44, 32, 82, 117, 115, 115, 105, 97]
@@ -54,13 +57,11 @@ class TestChild < Minitest::Test
     assert_ok nil, 'return null'
   end
 
-  def shag_local
+  def shag_vars
     assert_err 'localVar'
     say 'var localVar=1'
     assert_err 'localVar'
-  end
 
-  def shag_global
     v=rand 1000
     assert_err 'globalVar'
     say "globalVar=#{v}"
@@ -68,15 +69,19 @@ class TestChild < Minitest::Test
   end
 
   def children
-    Children.map{|k| k::Valid ? ExecJS::Xtrn::Child.new(k::Run) : nil }
+    (1..Spawn).map do
+      Children.map{|k| k::Valid ? M::Child.new(k::Run) : nil }
+    end
   end
 
   def self.build
     instance_methods(false).grep(/^shag_/).each do |m|
       Children.each_with_index  do |klass, idx|
-        define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}")do
-          skip unless @child=(@@children||=children)[idx]
-          send m
+        (1..Spawn).each do |n|
+          define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}_#{n}")do
+            skip unless @child=(@@children||=children)[n-1][idx]
+            send m
+          end
         end
       end
     end
