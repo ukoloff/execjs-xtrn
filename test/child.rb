@@ -46,11 +46,25 @@ class TestChild < Minitest::Test
     assert_err '#'      # Syntax
     assert_err 'none'   # Runtime
     assert_err false    # Argument
+    assert_err key: 2   # the same
   end
 
   def shag_null
     assert_equal say(''), {}
     assert_ok nil, 'return null'
+  end
+
+  def shag_local
+    assert_err 'localVar'
+    say 'var localVar=1'
+    assert_err 'localVar'
+  end
+
+  def shag_global
+    v=rand 1000
+    assert_err 'globalVar'
+    say "globalVar=#{v}"
+    assert_ok v, 'return globalVar'
   end
 
   def children
