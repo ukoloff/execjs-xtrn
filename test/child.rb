@@ -56,10 +56,9 @@ class TestChild < Minitest::Test
   end
 
   def self.build
-    n=0
     instance_methods(false).grep(/^shag_/).each do |m|
-      Children.each_index  do |idx|
-        define_method("test_#{n+=1}")do
+      Children.each_with_index  do |klass, idx|
+        define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}")do
           skip unless @child=(@@children||=children)[idx]
           send m
         end
