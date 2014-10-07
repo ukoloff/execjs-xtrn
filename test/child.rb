@@ -29,16 +29,16 @@ class TestChild < Minitest::Test
 
   def shag_intl
     assert_ok Codes, <<-EOJ
-      s='#{Chars}'
-      r=[]
-      for(i=0; i<s.length; i++) r.push(s.charCodeAt(i))
+      var s='#{Chars}'
+      var r=[]
+      for(var i=0; i<s.length; i++) r.push(s.charCodeAt(i))
       return r
     EOJ
 
     assert_ok Chars, <<-EOJ
-      c=#{Codes}
-      s=''
-      for(i=0; i<c.length; i++) s+=String.fromCharCode(c[i])
+      var c=#{Codes}
+      var s=''
+      for(var i=0; i<c.length; i++) s+=String.fromCharCode(c[i])
       return s
     EOJ
   end
