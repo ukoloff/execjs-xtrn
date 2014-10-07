@@ -5,9 +5,6 @@ class TestChild < Minitest::Test
   Spawn=2
   Children=[M::Node, M::Wsh]
 
-  Chars='Япония, 中华, Russia'
-  Codes=[1071, 1087, 1086, 1085, 1080, 1103, 44, 32, 20013, 21326, 44, 32, 82, 117, 115, 115, 105, 97]
-
   def say(code)
     @child.say code
   end
@@ -18,10 +15,17 @@ class TestChild < Minitest::Test
     assert_equal r, {'ok'=>result}
   end
 
+  def assert_err(code)
+    assert say(code)['err']
+  end
+
   def shag_math
     assert_ok 42, 'return 6*7'
-    assert_ok 3, 'return Math.round(Math.PI)'
+    assert_ok 3,  'return Math.round(Math.PI)'
   end
+
+  Chars='Япония, 中华, Russia'
+  Codes=[1071, 1087, 1086, 1085, 1080, 1103, 44, 32, 20013, 21326, 44, 32, 82, 117, 115, 115, 105, 97]
 
   def shag_intl
     assert_ok Codes, <<-EOJ
@@ -37,10 +41,6 @@ class TestChild < Minitest::Test
       for(i=0; i<c.length; i++) s+=String.fromCharCode(c[i])
       return s
     EOJ
-  end
-
-  def assert_err(code)
-    assert say(code)['err']
   end
 
   def shag_error
@@ -60,9 +60,8 @@ class TestChild < Minitest::Test
     say 'var localVar=1'
     assert_err 'localVar'
 
-    v=rand 1000
     assert_err 'globalVar'
-    say "globalVar=#{v}"
+    say "globalVar=#{v=rand 1000}"
     assert_ok v, 'return globalVar'
   end
 
