@@ -21,7 +21,7 @@ class ExecJS::Xtrn::Child
   end
 
   def say(obj)
-    @stdin.puts JSON.dump obj
+    @stdin.puts JSON.generate obj, :quirks_mode => true
     JSON.load @stdout.gets
   end
 
