@@ -23,7 +23,7 @@ class ExecJS::Xtrn::Engine
 
   def child
     return @child if @child
-    raise NotImplementedError unless self.class::Run
+    raise NotImplementedError, self.class.name unless self.class::Run
     @child=ExecJS::Xtrn::Child.new self.class::Run
   end
 
