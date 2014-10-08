@@ -1,3 +1,5 @@
+require 'coffee_script/source'
+
 class TestEngine < Minitest::Test
 
   M=ExecJS::Xtrn
@@ -25,6 +27,13 @@ class TestEngine < Minitest::Test
     assert_raises(RuntimeError){ @engine.eval 'globalVar' }
     refute @engine.exec "globalVar=#{v=rand 1000}"
     assert_equal v, @engine.eval('globalVar')
+  end
+
+  def shag_coffee
+    @engine.exec File.read CoffeeScript::Source.bundled_path
+    assert @engine.call('CoffeeScript.compile', "->")['function']
+    r=rand 100
+    assert_equal [r], @engine.eval(@engine.call 'CoffeeScript.compile', "do->[#{r}]", bare: true)
   end
 
   def klas_methods
