@@ -46,7 +46,7 @@ class ExecJS::Xtrn::Engine
   def child
     return @child if @child
     raise NotImplementedError, self.class.name unless self.class::Run
-    @child=child=ExecJS::Xtrn::Child.new self.class::Run
+    @child=child=ExecJS::Xtrn::Child.new(self.class::Run)
     child.stats @stats={}, @@stats, classStats=self.class.class_eval('@stats||={c: 0}')
     @@stats[:c]+=1
     classStats[:c]+=1
