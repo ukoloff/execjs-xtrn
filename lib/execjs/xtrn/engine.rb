@@ -2,7 +2,7 @@ class ExecJS::Xtrn::Engine
 
   Run=nil # Abstract class
 
-  @@stats={c: 0}
+  @stats=@@stats={c: 0}
 
   def exec(code)
     return if (code=code.to_s.strip).length==0
@@ -34,7 +34,7 @@ class ExecJS::Xtrn::Engine
   end
 
   def self.stats
-    (@stats||@@stats).dup
+    (@stats||{}).dup
   end
 
   def stats
