@@ -21,7 +21,7 @@ class ExecJS::Xtrn::Child
       @stdout.set_encoding options[:encoding]
     end
     @@stats[:c]+=1
-    @stats={}
+    @stats=[{}, @@stats]
   end
 
   def say(obj)
@@ -32,13 +32,14 @@ class ExecJS::Xtrn::Child
       t: Time.now # time spent
     }
     @stdin.puts delta[:o]=JSON.generate([obj])[1...-1]
-    JSON.load(delta[:i]=@stdout.gets)
-      .tap do
-        delta[:t]=Time.now-delta[:t]
-        delta[:i]=delta[:i].length
-        delta[:o]=delta[:o].length
-        [@stats, @@stats].each{|var| delta.each{|k, v| var[k]||=0; var[k]+=v}}
-      end
+    i=@stdout.gets
+
+    delta[:t]=Time.now-delta[:t]
+    delta[:i]=i.length
+    delta[:o]=delta[:o].length
+    @stats.each{|var| delta.each{|k, v| var[k]||=0; var[k]+=v}}
+
+    JSON.load i
   end
 
   def self.stats
@@ -46,7 +47,7 @@ class ExecJS::Xtrn::Child
   end
 
   def stats
-    @stats.dup
+    @stats[0].dup
   end
 
 end
