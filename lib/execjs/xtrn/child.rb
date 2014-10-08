@@ -46,7 +46,8 @@ class ExecJS::Xtrn::Child
     @@stats.dup
   end
 
-  def stats
+  def stats(*recs)
+    @stats+=recs
     @stats[0].dup
   end
 

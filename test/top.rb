@@ -18,5 +18,4 @@ class TestTop < Minitest::Test
     assert_equal 8, ctx.call('dec', 9)
   end
 
-  Minitest.after_run{puts "Stats: #{ExecJS::Xtrn::Child.stats.map{|k, v|"#{k}=#{v}"}*', '}"}
 end

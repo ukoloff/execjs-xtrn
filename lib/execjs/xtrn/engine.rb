@@ -2,6 +2,8 @@ class ExecJS::Xtrn::Engine
 
   Run=nil # Abstract class
 
+  @@stats={c: 0}
+
   def exec(code)
     return if (code=code.to_s.strip).length==0
     result=child.say code
@@ -31,12 +33,23 @@ class ExecJS::Xtrn::Engine
     new.tap{|ctx| ctx.exec code}
   end
 
+  def self.stats
+    @@stats||{}.dup
+  end
+
+  def stats
+    (@stats||{}).dup
+  end
+
   private
 
   def child
     return @child if @child
     raise NotImplementedError, self.class.name unless self.class::Run
-    @child=ExecJS::Xtrn::Child.new self.class::Run
+    @child=child=ExecJS::Xtrn::Child.new self.class::Run
+    child.stats @stats={}, @@stats
+    @@stats[:c]+=1
+    child
   end
 
 end
