@@ -34,7 +34,7 @@ class ExecJS::Xtrn::Engine
   end
 
   def self.stats
-    @@stats||{}.dup
+    (@stats||@@stats).dup
   end
 
   def stats
@@ -47,8 +47,9 @@ class ExecJS::Xtrn::Engine
     return @child if @child
     raise NotImplementedError, self.class.name unless self.class::Run
     @child=child=ExecJS::Xtrn::Child.new self.class::Run
-    child.stats @stats={}, @@stats
+    child.stats @stats={}, @@stats, classStats=self.class.class_eval('@stats||={c: 0}')
     @@stats[:c]+=1
+    classStats[:c]+=1
     child
   end
 
