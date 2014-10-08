@@ -16,7 +16,7 @@ class TestChild < Shagi
   end
 
   def self.build
-    instance_methods.grep(/^shag_/).each do |m|
+    ancestors[1].instance_methods(false).grep(/^shag_/).each do |m|
       Children.each_with_index  do |klass, idx|
         (1..Spawn).each do |n|
           define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}_#{n}")do
