@@ -13,7 +13,7 @@ class TestNvm < Shagi
   end
 
   def buildVMs
-    @@child=child=M::Child.new Child::Run
+    @@child=child=M::Child.new(Child::Run)
     (1..Spawn).map do
       child.say(vm: 0)['vm']
     end
