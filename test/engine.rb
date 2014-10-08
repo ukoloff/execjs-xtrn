@@ -6,7 +6,7 @@ class TestEngine < Minitest::Test
 
   Spawn=2
   Engines=[M::Node, M::Wsh]
-  Stats=[M::Child, M::Engine]+Engines
+  Stats=[M::Child, M::Engine]+M::Engines
 
   def shag_methods
     refute @engine.exec <<-EOJ
