@@ -82,7 +82,7 @@ class TestEngine < Minitest::Test
 
   build
 
-  Minitest.after_run do
+  ObjectSpace.define_finalizer(M)do
     puts "Statistics:"
     s=M.stats
     len=s.keys.map(&:length).max+1
