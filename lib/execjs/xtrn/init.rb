@@ -14,4 +14,8 @@ module ExecJS::Xtrn
 
   init
 
+  def self.stats
+    Hash[([Child, Engine]+Engines).map{|k| [k.name.split(/\W+/).last, k.stats]}]
+  end
+
 end

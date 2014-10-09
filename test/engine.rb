@@ -6,7 +6,6 @@ class TestEngine < Minitest::Test
 
   Spawn=2
   Engines=[M::Node, M::Wsh]
-  Stats=[M::Child, M::Engine]+M::Engines
 
   def shag_methods
     refute @engine.exec <<-EOJ
@@ -85,7 +84,7 @@ class TestEngine < Minitest::Test
 
   Minitest.after_run do
     puts "Statistics:"
-    Stats.each{|k| puts " #{k.name.split(/\W+/).last}: #{k.stats.map{|k, v| "#{k}=#{v}"}*', ' }"}
+    M.stats.each{|k, v| puts " #{k}: "+v.map{|k, v| "#{k}=#{v}"}*', ' }
   end
 
 end
