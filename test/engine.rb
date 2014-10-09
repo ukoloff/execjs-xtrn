@@ -84,7 +84,7 @@ class TestEngine < Minitest::Test
 
   Minitest.after_run do
     puts "Statistics:"
-    M.stats.each{|k, v| puts " #{k}: "+v.map{|k, v| "#{k}=#{v}"}*', ' }
+    M.stats.each{|k, v| puts " #{k}: "+v.map{|k, v| "#{k}=#{v.round(3).to_s.sub /[.]0*$/, ''}"}*', ' }
   end
 
 end
