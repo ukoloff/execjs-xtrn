@@ -86,7 +86,7 @@ class TestEngine < Minitest::Test
     puts "Statistics:"
     s=M.stats
     len=s.keys.map(&:length).max+1
-    s.each{|k, v| puts "#{' '*(len-k.length)}#{k}: "+v.map{|k, v| "#{k}=#{v.round(3).to_s.sub /[.]0*$/, ''}"}*', ' }
+    s.each{|k, v| puts "#{' '*(len-k.length)}#{k}: "+v.map{|k, v| "#{k}=#{v.round(3).to_s.sub /[.]?0*$/, ''}"}*', ' }
   end
 
 end
