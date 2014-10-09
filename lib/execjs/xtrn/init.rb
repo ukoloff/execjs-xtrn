@@ -1,6 +1,6 @@
 module ExecJS::Xtrn
 
-  Engines=[Node, Nvm, Wsh]
+  Engines=[Nvm, Node, Wsh]
 
   attr :engine
 
