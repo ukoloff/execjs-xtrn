@@ -21,6 +21,7 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
     c=child
     vm=c.say({vm: 0})['vm']
     raise RuntimeError, 'Cannot create VM' unless vm
+    self.class.class_eval{@stats[:m]||=0; @stats[:m]+=1}
     [@@child, @vm=vm]
   end
 
