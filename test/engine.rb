@@ -5,7 +5,7 @@ class TestEngine < Minitest::Test
   M=ExecJS::Xtrn
 
   Spawn=2
-  Engines=[M::Node, M::Wsh]
+  Engines=M::Engines
 
   def shag_methods
     refute @engine.exec <<-EOJ
