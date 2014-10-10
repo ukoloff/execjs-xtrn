@@ -20,11 +20,11 @@ class TestEngine < Minitest::Test
   end
 
   def shag_vars
-    assert_raises(RuntimeError){ @engine.eval 'localVar' }
+    assert_raises(M::Error){ @engine.eval 'localVar' }
     refute @engine.exec 'var localVar=1'
-    assert_raises(RuntimeError){ @engine.eval 'localVar' }
+    assert_raises(M::Error){ @engine.eval 'localVar' }
 
-    assert_raises(RuntimeError){ @engine.eval 'globalVar' }
+    assert_raises(M::Error){ @engine.eval 'globalVar' }
     refute @engine.exec "globalVar=#{v=rand 1000}"
     assert_equal v, @engine.eval('globalVar')
   end

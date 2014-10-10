@@ -6,7 +6,7 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
     ch, vmn = vm
     result=ch.say vm: vmn, js: code
     result={'err'=>'Invalid JS result'} unless Hash===result
-    raise RuntimeError, result['err'] if result['err']
+    raise Error, result['err'] if result['err']
     result['ok']
   end
 
@@ -20,7 +20,7 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
     return [@@child, @vm] if @vm
     c=child
     vm=c.say({vm: 0})['vm']
-    raise RuntimeError, 'Cannot create VM' unless vm
+    raise Error, 'Cannot create VM' unless vm
     cs=self.class.class_eval{@stats}
     cs[:m]||=0
     cs[:m]+=1

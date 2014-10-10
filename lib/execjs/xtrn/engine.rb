@@ -1,4 +1,9 @@
+class ExecJS::Xtrn::Error < RuntimeError
+end
+
 class ExecJS::Xtrn::Engine
+
+  Error = ExecJS::Xtrn::Error
 
   Run=nil # Abstract class
 
@@ -8,7 +13,7 @@ class ExecJS::Xtrn::Engine
     return if (code=code.to_s.strip).length==0
     result=child.say code
     result={'err'=>'Invalid JS result'} unless Hash===result
-    raise RuntimeError, result['err'] if result['err']
+    raise Error, result['err'] if result['err']
     result['ok']
   end
 
