@@ -63,4 +63,10 @@ class Shagi < Minitest::Test
     assert_ok v, 'return globalVar'
   end
 
+  def shag_stats
+    @child.stats r={}
+    say '//'
+    assert_equal r[:n], 1
+  end
+
 end
