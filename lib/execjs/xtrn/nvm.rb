@@ -24,7 +24,7 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
 
   def vm
     return @vm if @vm
-    child
+    c=child
     @stats[:once]=1 if @stats # Remove @stats, added by Engine
     @stats={}                 # Our new stats
     vm=say({vm: 0})['vm']
