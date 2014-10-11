@@ -1,4 +1,5 @@
 require 'coffee-script'
+require 'uglifier'
 ExecJS::Xtrn.init
 
 class TestTop < Minitest::Test
@@ -34,6 +35,12 @@ class TestTop < Minitest::Test
   def test_coffee
     assert CoffeeScript.compile('->', header: true)[CoffeeScript.version]
     assert CoffeeScript.compile('a b c', bare: true)['a(b(c))']
+  end
+
+  def test_uglify
+    u=Uglifier.new
+    assert u.compile('a( 1 + 2 * 3 )')['a(7)']
+    assert u.compile('b( 1 ? x : y )')['b(x)']
   end
 
 end
