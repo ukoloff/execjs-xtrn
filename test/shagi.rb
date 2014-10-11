@@ -67,6 +67,12 @@ class Shagi < Minitest::Test
     @child.stats r={}
     say '//'
     assert_equal r[:n], 1
+    ri=@child.stats
+    rc=@child.class.stats
+    say ''
+    assert_equal r[:n], 2
+    assert_equal ri[:n]+1, @child.stats[:n]
+    assert_equal rc[:n]+1, @child.class.stats[:n]
   end
 
 end
