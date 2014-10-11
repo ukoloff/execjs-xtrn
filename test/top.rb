@@ -1,3 +1,6 @@
+require 'coffee-script'
+ExecJS::Xtrn.init
+
 class TestTop < Minitest::Test
 
   def test_exec
@@ -26,6 +29,11 @@ class TestTop < Minitest::Test
     assert_equal s[:n], ExecJS.stats[:n]
     ExecJS.exec 'null'
     assert_operator s[:n], :<, ExecJS.stats[:n]
+  end
+
+  def test_coffee
+    assert CoffeeScript.compile('->', header: true)[CoffeeScript.version]
+    assert CoffeeScript.compile('a b c', bare: true)['a(b(c))']
   end
 
 end
