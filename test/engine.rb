@@ -34,6 +34,7 @@ class TestEngine < Minitest::Test
     assert_equal 3, @engine.call('CoffeeScript.compile', "->").split(/\Wfunction\W/).length
     r=rand 100
     assert_equal [r], @engine.eval(@engine.call 'CoffeeScript.compile', "do->[#{r}]", bare: true)
+    assert_equal 3, @engine.call('CoffeeScript.eval', 'Math.round Math.PI')
   end
 
   def shag_stats
