@@ -3,8 +3,7 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
 
   def exec(code)
     return if (code=code.to_s.strip).length==0
-    ch, vmn = vm
-    result=ch.say vm: vmn, js: code
+    result=say vm: vm, js: code
     result={'err'=>'Invalid JS result'} unless Hash===result
     raise Error, result['err'] if result['err']
     result['ok']
@@ -16,10 +15,19 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
     @@child||=super
   end
 
+  def say(code)
+    ch=@@child
+    @stats[:once]=1
+    ch.stats @stats
+    ch.say code
+  end
+
   def vm
-    return [@@child, @vm] if @vm
-    c=child
-    vm=c.say({vm: 0})['vm']
+    return @vm if @vm
+    child
+    @stats[:once]=1 if @stats # Remove @stats, added by Engine
+    @stats={}                 # Our new stats
+    vm=say({vm: 0})['vm']
     raise Error, 'Cannot create VM' unless vm
     cs=self.class.class_eval{@stats}
     cs[:m]||=0
@@ -29,7 +37,7 @@ class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
       cs[:x]+=1
       c.say vm: vm rescue nil
     end
-    [@@child, @vm=vm]
+    @vm=vm
   end
 
 end

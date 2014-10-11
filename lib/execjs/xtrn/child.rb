@@ -18,6 +18,7 @@ class ExecJS::Xtrn::Child
     delta[:i]=i.length
     delta[:o]=delta[:o].length
     @stats.each{|var| delta.each{|k, v| var[k]||=0; var[k]+=v}}
+    @stats.reject!{|var| var.delete :once }
 
     JSON.load i
   end

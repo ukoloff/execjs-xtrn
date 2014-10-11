@@ -73,6 +73,8 @@ class Shagi < Minitest::Test
     assert_equal r[:n], 2
     assert_equal ri[:n]+1, @child.stats[:n]
     assert_equal rc[:n]+1, @child.class.stats[:n]
+    [r, ri, rc].each{|rec| %w(i o t).each{|sym| assert rec[sym.to_sym]}}
+    assert_operator rc[:c], :>, 0
   end
 
 end

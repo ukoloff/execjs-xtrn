@@ -36,6 +36,15 @@ class TestEngine < Minitest::Test
     assert_equal [r], @engine.eval(@engine.call 'CoffeeScript.compile', "do->[#{r}]", bare: true)
   end
 
+  def shag_stats
+    @engine.exec '//'
+    s=@engine.stats
+    @engine.exec ' '
+    assert_equal s[:n], @engine.stats[:n]
+    @engine.exec '[]'
+    assert_equal s[:n]+1, @engine.stats[:n]
+  end
+
   def klas_methods
     assert_equal 4, @class.exec('return 2*2')
     assert_equal 6, @class.eval('({x: 1+2+3}).x')
