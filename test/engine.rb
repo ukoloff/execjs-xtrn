@@ -4,7 +4,7 @@ class TestEngine < Minitest::Test
 
   M=ExecJS::Xtrn
 
-  Spawn=2
+  Spawn=5
   Engines=M::Engines
 
   def shag_methods

@@ -2,7 +2,6 @@ require_relative 'shagi'
 
 class TestNvm < Shagi
 
-  Spawn=2
   Child=M::Nvm
 
   def say(code)

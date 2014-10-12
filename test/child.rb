@@ -2,7 +2,6 @@ require_relative 'shagi'
 
 class TestChild < Shagi
 
-  Spawn=2
   Children=[M::Node, M::Wsh]
 
   def say(code)

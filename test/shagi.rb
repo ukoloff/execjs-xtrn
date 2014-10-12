@@ -1,6 +1,7 @@
 # encoding: utf-8
 class Shagi < Minitest::Test
 
+  Spawn=5
   M=ExecJS::Xtrn
 
   def say(code)
