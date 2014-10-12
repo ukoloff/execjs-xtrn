@@ -23,13 +23,25 @@ class TestTop < Minitest::Test
   end
 
   def test_stats
-    ExecJS.exec '//'
-    s=ExecJS.stats
-    %w(c i o t).each{|sym| assert s[sym.to_sym]}
-    ExecJS.exec ' '
-    assert_equal s[:n], ExecJS.stats[:n]
-    ExecJS.exec 'null'
-    assert_operator s[:n], :<, ExecJS.stats[:n]
+    ctx=ExecJS.compile <<-EOJ
+      summa = function(n)
+      {
+        var r=0
+        for(var i = 1; i<=n; i++)
+        {
+          r+=i
+          for(var j = 1 ; j<=n; j++);
+        }
+        return r
+      }
+    EOJ
+    s=ctx.stats
+    %w(i o n t).each{|sym| assert s[sym.to_sym]}
+    ctx.exec ' '
+    assert_equal s, ctx.stats
+    assert_equal 50005000, ctx.call('summa', 10000)
+    assert_equal s[:n]+1, ctx.stats[:n]
+    %w(i o t).each{|sym| assert_operator s[sym.to_sym], :<, ctx.stats[sym.to_sym]}
   end
 
   def test_coffee
