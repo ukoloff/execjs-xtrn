@@ -30,16 +30,20 @@ class TestTop < Minitest::Test
         for(var i = 1; i<=n; i++)
         {
           r+=i
-          for(var j = 1 ; j<=n; j++);
+          for(var t = ms() ; t>=ms(); );
         }
         return r
+      }
+      function ms()
+      {
+        new Date().getTime()
       }
     EOJ
     s=ctx.stats
     %w(i o n t).each{|sym| assert s[sym.to_sym]}
     ctx.exec ' '
     assert_equal s, ctx.stats
-    assert_equal 50005000, ctx.call('summa', 10000)
+    assert_equal 5050, ctx.call('summa', 100)
     assert_equal s[:n]+1, ctx.stats[:n]
     %w(i o t).each{|sym| assert_operator s[sym.to_sym], :<, ctx.stats[sym.to_sym]}
   end
