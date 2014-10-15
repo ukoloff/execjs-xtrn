@@ -36,7 +36,7 @@ class TestTop < Minitest::Test
       }
       function ms()
       {
-        new Date().getTime()
+        return new Date().getTime()
       }
     EOJ
     s=ctx.stats
