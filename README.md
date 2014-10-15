@@ -36,6 +36,34 @@ The latter will be monkey-patched.
 
 ExecJS::Xtrn is primarily designed to power other gems that use popular ExecJS.
 
+But it has his own API (similar to ExecJS' API) and can be used itself.
+
+In general one should create instance of an Engine and then feed it with JavaScript code:
+
+```ruby
+ctx=ExecJS::Xtrn::Wsh.new
+ctx.exec 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
+puts "10!=#{ctx.call 'fact', 10}"
+```
+Every execution context has three methods:
+  * exec('`code`') -  executes arbitrary JavaScript code. To get result `return` must be called.
+  * eval('`expression`') - evaluate JavaScript expression. `return` is not needed
+  * call(`function`, arguments...) - special form of eval for function call
+
+Engine class also has exec and eval methods, they just create brand new execution context,
+pass argument to it, destroy that context and return its result. Using these class methods
+is not recommended, since it's just what ExecJS does (except for Nvm engine).
+
+Engine class also has compile method that combines `new` and `exec` and returns execution context.
+This is how ExecJS is used in most cases.
+
+```ruby
+ctx=ExecJS::Xtrn::Wsh.compile 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
+puts "10!=#{ctx.call 'fact', 10}"
+```
+
+And finally ExecJS::Xtrn patches ExecJS and installs those 3 class methods (exec, eval, compile) in it.
+So, `ExecJS.compile` is `ExecJS::Xtrn::Nvm.compile` if Nvm engine is available.
 
 ## Overriding ExecJS
 
@@ -75,6 +103,20 @@ s.stats
 but c (and m, x) fields are omitted there.
 
 ## Compatibilty
+
+Not every JavaScript code behaves identically in ExecJS and ExecJS::Xtrn. In most cases it depends on how
+global JavaScript variables are used. For most modern code it is the same though.
+
+As a rule of thumb, JavaScript code must survive after wrapping in anonymous function (`(function(){...})()`).
+
+For instance, old versions of `handlebars_assets` didn't work
+in ExecJS::Xtrn (and worked in ExecJS).
+
+The following packages have been tested to run under ExecJS::Xtrn out-of-box:
+
+  * [CoffeeScript](http://coffeescript.org/) via [coffee-script](https://rubygems.org/gems/coffee-script) and [coffee-rails](https://rubygems.org/gems/coffee-rails) gems
+  * [UglifyJS2](https://github.com/mishoo/UglifyJS2) via [uglifier](https://github.com/lautis/uglifier)
+  * [Handlebars](http://handlebarsjs.com/) via [handlebars_assets](https://github.com/leshill/handlebars_assets) gem
 
 ## Credits
 
