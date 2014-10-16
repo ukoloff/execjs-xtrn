@@ -118,6 +118,23 @@ The following packages have been tested to run under ExecJS::Xtrn out-of-box:
   * [UglifyJS2](https://github.com/mishoo/UglifyJS2) via [uglifier](https://github.com/lautis/uglifier)
   * [Handlebars](http://handlebarsjs.com/) via [handlebars_assets](https://github.com/leshill/handlebars_assets) gem
 
+## Testing
+
+After git checkout, required NPM modules must be installed. Simply run:
+
+```
+bundle install
+bundle exec rake npm
+```
+
+The testing itself is
+
+```
+bundle exec rake
+```
+
+And `bundle exec` may be ommited in most cases.
+
 ## Credits
 
   * [ExecJS](https://github.com/sstephenson/execjs)
