@@ -2,14 +2,18 @@ module ExecJS::Xtrn
 
   Engines=[Nvm, Node, Wsh]
 
-  attr :engine
+  class << self
+    attr_accessor :engine
+  end
 
+  # Find best available Engine
+  self.engine=Engines.find{|k| k::Valid} || Engine
+
+  # Install into ExecJS
   def self.init
-    # Find best available Engine
-    engine||=Engines.find{|k| k::Valid} || Engine
-    # Install into ExecJS
+    slf=self
     sc=(class<<ExecJS;self;end)
-    Engine.methods(false).each{|m| sc.instance_eval{define_method(m){|*args| engine.send m, *args }}}
+    Engine.methods(false).each{|m| sc.instance_eval{define_method(m){|*args| slf.engine.send m, *args }}}
   end
 
   init
