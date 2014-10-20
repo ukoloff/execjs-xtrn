@@ -32,6 +32,34 @@ The latter will be monkey-patched.
 
 ## Engines
 
+ExecJS::Xtrn uses two external JavaScript runners:
+
+  * Windows Script Host
+  * Node.js in two modes:
+    - Simple (1 execution context = 1 external process)
+    - Nvm (all execution contexts share single external process using [vm API](http://nodejs.org/api/vm.html))
+
+So, there exist *four* engines:
+
+  * Engine - absctract engine (smart enough to execute blank lines)
+  * Wsh - engine using WSH (CScript)
+  * Node - engine using Node.js (separate process for every execution context)
+  * Nvm - engine using Node.js and vm API (single process)
+
+All engines autodetect their availability at startup (on `require 'execjs/xtrn'`) and sets `Valid` constants.
+Eg on MS Windows ExecJS::Xtrn::Wsh::Valid = true, on Linux - false
+
+One of available engines is made default engine for ExecJS.
+If Node.js is available it is Nvm.
+Else, if running on Windows it is Wsh.
+Else it is Engine, so ExecJS is made unusable.
+
+Default engine can be shown/changed at any moment with `ExecJS::Xtrn.engine` accessor, eg
+
+```ruby
+ExecJS::Xtrn.engine=ExecJS::Xtrn::Node
+```
+
 ## API
 
 ExecJS::Xtrn is primarily designed to power other gems that use popular ExecJS.
