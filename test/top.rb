@@ -59,4 +59,22 @@ class TestTop < Minitest::Test
     assert u.compile('b( 1 ? x : y )')['b(x)']
   end
 
+  def test_switch
+    assert_equal 42, ExecJS.eval('7*6')
+    e=ExecJS::Xtrn.engine
+    ExecJS::Xtrn.engine=FakeEngine
+    assert_equal 1, ExecJS.exec('A')
+    assert_equal 2, ExecJS.eval('B')
+    assert_equal 4, ExecJS.compile.eval('C')
+    ExecJS::Xtrn.engine=e
+    assert_equal 42, ExecJS.eval('21*2')
+  end
+
+end
+
+class FakeEngine < ExecJS::Xtrn::Engine
+  def exec(s='')
+    @@n||=0
+    @@n+=1
+  end
 end
