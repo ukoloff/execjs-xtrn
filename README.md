@@ -146,6 +146,10 @@ The following packages have been tested to run under ExecJS::Xtrn out-of-box:
   * [UglifyJS2](https://github.com/mishoo/UglifyJS2) via [uglifier](https://github.com/lautis/uglifier)
   * [Handlebars](http://handlebarsjs.com/) via [handlebars_assets](https://github.com/leshill/handlebars_assets) gem
 
+CoffeeScript since v1.9.0 introduces new incompatibility:
+it uses `Object.create` that is missing from WSH.
+To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh.
+
 ## Testing
 
 After git checkout, required NPM modules must be installed. Simply run:
