@@ -130,6 +130,12 @@ s.stats
 ```
 but c (and m, x) fields are omitted there.
 
+If ExecJS::Xtrn detects it is run under Ruby on Rails,
+it installs additional path `/rails/jsx' to display its statistics
+(you can see that route in sextant, for example).
+
+It is one more reason not to use ExecJS::Xtrn in production mode ;-)
+
 ## Compatibilty
 
 Not every JavaScript code behaves identically in ExecJS and ExecJS::Xtrn. In most cases it depends on how
