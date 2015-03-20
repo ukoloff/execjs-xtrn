@@ -1,4 +1,5 @@
 require 'json'
+require_relative 'version'
 
 class ExecJS::Xtrn::Child
 
