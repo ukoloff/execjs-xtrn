@@ -1,5 +1,5 @@
 module ExecJS::Xtrn
-  Rack = ->(arg){ExecJS::Xtrn.rack}
+  Rack = ->(arg){rack}
 
   def self.rack
     [
