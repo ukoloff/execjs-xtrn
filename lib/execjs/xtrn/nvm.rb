@@ -1,4 +1,8 @@
+#
 # Interface to Node's vm
+#
+require_relative 'node'
+
 class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
 
   def exec(code)

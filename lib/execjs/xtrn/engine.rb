@@ -1,3 +1,5 @@
+require_relative 'child'
+
 class ExecJS::Xtrn::Error < RuntimeError
 end
 

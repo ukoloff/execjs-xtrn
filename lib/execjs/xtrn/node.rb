@@ -1,3 +1,5 @@
+require_relative 'engine'
+
 class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
 
   Run={
