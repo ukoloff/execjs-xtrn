@@ -31,6 +31,8 @@ class TestEngine < Minitest::Test
 
   def shag_coffee
     @engine.exec File.read CoffeeScript::Source.bundled_path
+    skip if M::Wsh===@engine &&
+      @engine.eval('CoffeeScript.VERSION').match(/^1[.]9[.]/)
     assert_equal 3, @engine.call('CoffeeScript.compile', "->").split(/\Wfunction\W/).length
     r=rand 100
     assert_equal [r], @engine.eval(@engine.call 'CoffeeScript.compile', "do->[#{r}]", bare: true)
