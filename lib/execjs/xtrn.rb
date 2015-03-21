@@ -1,4 +1,4 @@
-%w(wsh nvm rails).each{|x| require_relative "xtrn/#{x}"}
+require_relative "xtrn/rails"
 
 module ExecJS::Xtrn
 
