@@ -39,6 +39,8 @@ ExecJS::Xtrn uses two external JavaScript runners:
     - Simple (1 execution context = 1 external process)
     - Nvm (all execution contexts share single external process using [vm API](http://nodejs.org/api/vm.html))
 
+Nvm engine has nothing common with [nvm](https://github.com/creationix/nvm).
+
 So, there exist *four* engines:
 
   * Engine - absctract engine (smart enough to execute blank lines)
@@ -71,7 +73,7 @@ In general one should create instance of an Engine and then feed it with JavaScr
 ```ruby
 ctx=ExecJS::Xtrn::Wsh.new
 ctx.exec 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
-puts "10!=#{ctx.call 'fact', 10}"
+puts "10! = #{ctx.call 'fact', 10}"
 ```
 Every execution context has four methods:
   * exec(`code`) -  executes arbitrary JavaScript code. To get result `return` must be called
@@ -89,6 +91,10 @@ Engine class also has `compile` method that combines `new` and `exec`
 and returns execution context.
 This is how ExecJS is used in most cases.
 
+```ruby
+ctx=ExecJS::Xtrn::Wsh.compile 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
+puts "10! = #{ctx.call 'fact', 10}"
+```
 And `load` methods is likewise combination of `new`+`load`,
 it is `compile` that can load its code from file.
 
@@ -96,12 +102,8 @@ it is `compile` that can load its code from file.
 is code or path by first symbols of it. So, start path with `/`, `./`
 or `../` (but not from `//`). On Windows `\` and
 
-```ruby
-ctx=ExecJS::Xtrn::Wsh.compile 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
-puts "10!=#{ctx.call 'fact', 10}"
-```
-
-And finally ExecJS::Xtrn patches ExecJS and installs those 3 class methods (exec, eval, compile) in it.
+Finally ExecJS::Xtrn patches ExecJS and installs those 4 class methods
+(`exec`, `eval`, `compile` and `load`) in it.
 So, `ExecJS.compile` is `ExecJS::Xtrn::Nvm.compile` if Nvm engine is available.
 
 ## Preloading
@@ -123,6 +125,8 @@ ExecJS::Xtrn::Wsh::Preload=[
   './lib/js/keys.js',
   'console={log: function(){WScript.Echo([].slice.call(arguments).join(" "))}}'
   ]
+# Yes, console.log is avaialable in Wsh now!
+# And yes, console.log can be used in ExecJS::Xtrn!
 ```
 You can add preload scripts to any engine or to Engine base class.
 They will be loaded according to inheritance:
@@ -193,7 +197,8 @@ The following packages have been tested to run under ExecJS::Xtrn out-of-box:
 
 CoffeeScript since v1.9.0 introduces new incompatibility:
 it uses `Object.create` that is missing from WSH.
-To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh.
+To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh
+(sort of [ExecJS::Xtrn::Wsh::Preload](#preloading))
 
 ## Testing
 
