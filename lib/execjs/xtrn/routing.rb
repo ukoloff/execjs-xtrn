@@ -6,7 +6,12 @@ module ExecJS::Xtrn::Rack
     json:
       mime: appication/json
       dump: JSON
+    html:
+      mime: text/html
+      dump: self
   EOY
+
+  Formats.each {|k, v| v['dump']=instance_eval v['dump']}
 
   def self.stats
     ExecJS::Xtrn.stats.as_json
@@ -18,8 +23,13 @@ module ExecJS::Xtrn::Rack
     [
       200,
       {"Content-Type"=> f['mime']},
-      [f['dump'].constantize.dump(stats)],
+      [f['dump'].dump(stats)],
     ]
+  end
+
+  # Dump as HTML
+  def self.dump s
+    'Hi there!'
   end
 end
 
