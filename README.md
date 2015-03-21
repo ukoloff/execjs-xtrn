@@ -73,17 +73,28 @@ ctx=ExecJS::Xtrn::Wsh.new
 ctx.exec 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
 puts "10!=#{ctx.call 'fact', 10}"
 ```
-Every execution context has three methods:
-  * exec('`code`') -  executes arbitrary JavaScript code. To get result `return` must be called.
-  * eval('`expression`') - evaluate JavaScript expression. `return` is not needed
+Every execution context has four methods:
+  * exec(`code`) -  executes arbitrary JavaScript code. To get result `return` must be called
+  * load(`code`) or load(`path`) - exec that can load its code from file
+  * eval(`expression`) - evaluate JavaScript expression. `return` is not needed
   * call(`function`, arguments...) - special form of eval for function call
 
-Engine class also has exec and eval methods, they just create brand new execution context,
-pass argument to it, destroy that context and return its result. Using these class methods
-is not recommended, since it's just what ExecJS does (except for Nvm engine).
+There are `exec` and `eval` methods in Engine class,
+they just create brand new execution context,
+pass argument to it, destroy that context and return its result.
+Using these class methods is not recommended, since it's just what ExecJS does
+(except for Nvm engine).
 
-Engine class also has compile method that combines `new` and `exec` and returns execution context.
+Engine class also has `compile` method that combines `new` and `exec`
+and returns execution context.
 This is how ExecJS is used in most cases.
+
+And `load` methods is likewise combination of `new`+`load`,
+it is `compile` that can load its code from file.
+
+`load` method (class' or instance's) detects whether its argument
+is code or path by first symbols of it. So, start path with `/`, `./`
+or `../` (but not from `//`). On Windows `\` and
 
 ```ruby
 ctx=ExecJS::Xtrn::Wsh.compile 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'

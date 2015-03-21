@@ -19,6 +19,13 @@ class ExecJS::Xtrn::Engine
     result['ok']
   end
 
+  PathX=[/^[.]{1,2}\/|^\/(?!\/)/]
+  PathX << /^[.]{0,2}\\|^\w:./i if Gem.win_platform?
+
+  def load code
+    exec PathX.find{|re| re.match code} ? File.read(code) : code
+  end
+
   def eval(code)
     return if (code=code.to_s.strip).length==0
     exec "return eval(#{JSON.generate([code])[1...-1]})"
@@ -40,6 +47,10 @@ class ExecJS::Xtrn::Engine
     new.tap{|ctx| ctx.exec code}
   end
 
+  def self.load code
+    new.tap{|ctx| ctx.load code}
+  end
+
   def self.stats
     (@stats||{}).dup
   end
@@ -59,5 +70,4 @@ class ExecJS::Xtrn::Engine
     classStats[:c]+=1
     child
   end
-
 end

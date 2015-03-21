@@ -17,6 +17,12 @@ class TestEngine < Minitest::Test
     assert_equal 89, @engine.eval('fib(10)')
     assert_equal 8,  @engine.call('fib', 5)
     assert_equal 79, @engine.call('Math.max', 44, 27, 79, 73, 42, 4, 23, 24, 36, 13)
+
+    assert_raises(M::Error){ @engine.eval '_load' }
+    @engine.load File.expand_path '../load.js', __FILE__
+    assert_equal ({}), @engine.eval('_load')
+    @engine.load '_load.a=108'
+    assert_equal ({"a"=>108}), @engine.eval('_load')
   end
 
   def shag_vars
@@ -60,6 +66,11 @@ class TestEngine < Minitest::Test
       }
     EOJ
     assert_equal 6, x.call('inc', 5)
+  end
+
+  def klas_load
+    z=@class.load File.expand_path '../load.js', __FILE__
+    assert_equal ({}), z.eval('_load')
   end
 
   def engines
