@@ -1,4 +1,4 @@
-require_relative "xtrn/wsh"
+require_relative "xtrn/rails"
 
 module ExecJS::Xtrn
 
