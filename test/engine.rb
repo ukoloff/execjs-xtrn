@@ -6,6 +6,8 @@ class TestEngine < Minitest::Test
 
   Spawn=5
   Engines=M::Engines
+  Engines.each{|e| e::Preload=[]}
+  M::Engine::Preload=[]
 
   def shag_methods
     refute @engine.exec <<-EOJ
@@ -71,6 +73,24 @@ class TestEngine < Minitest::Test
   def klas_load
     z=@class.load File.expand_path '../load.js', __FILE__
     assert_equal ({}), z.eval('_load')
+  end
+
+  def klas_preload
+    res=@class.name[-1]
+    res='em' if 'm'==res
+
+    Spawn.times do
+      begin
+        Engines.shuffle.each{|e| e::Preload << "_preload.#{e.name[-1]}=1"}
+        M::Engine::Preload << '!function(){this._preload={}}()'
+
+        assert_equal res, @class.eval('_preload').keys*''
+
+      ensure
+        Engines.each{|e| e::Preload.clear}
+        M::Engine::Preload.clear
+      end
+    end
   end
 
   def engines

@@ -104,6 +104,31 @@ puts "10!=#{ctx.call 'fact', 10}"
 And finally ExecJS::Xtrn patches ExecJS and installs those 3 class methods (exec, eval, compile) in it.
 So, `ExecJS.compile` is `ExecJS::Xtrn::Nvm.compile` if Nvm engine is available.
 
+## Preloading
+
+Sometimes it's neccesary to initialize all execution contexts before passing
+code to them.
+For instance, add some standard JavaScript methods missing in Wsh engine.
+
+It can be done by setting Preload constant on engine class.
+
+```ruby
+ExecJS::Xtrn::Wsh::Preload='./lib/js/map.js'
+```
+or maybe
+
+```ruby
+ExecJS::Xtrn::Wsh::Preload=[
+  './lib/js/map.js',
+  './lib/js/keys.js',
+  'console={log: function(){WScript.Echo([].slice.call(arguments).join(" "))}}'
+  ]
+```
+You can add preload scripts to any engine or to Engine base class.
+They will be loaded according to inheritance:
+Engine::Preload will be used by all engines,
+Node::Preload is for Node and Nvm, while Nvm::Preload is for Nvm only.
+
 ## Overriding ExecJS
 
 Sometimes ExecJS is required after ExecJS::Xtrn. In that case you can call ExecJS::Xtrn.init and

@@ -70,4 +70,12 @@ class ExecJS::Xtrn::Engine
     classStats[:c]+=1
     child
   end
+
+  def initialize
+    self.class.ancestors.reverse.map do |m|
+      list=m.const_get 'Preload', false rescue nil
+      list ? Array===list ? list : [list] : []
+    end
+    .flatten.uniq.each{|code| load code}
+  end
 end
