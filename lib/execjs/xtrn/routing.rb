@@ -1,7 +1,5 @@
 module ExecJS::Xtrn
-  Rack = ->(arg){rack}
-
-  def self.rack
+  Rack=Proc.new do |arg|
     [
       200,
       {"Content-Type"=> "text/yaml"},
@@ -13,6 +11,6 @@ end
 class Rails::Application
   initializer :execjs_xtrn_stats do
     Rails.application.routes_reloader.paths <<
-      File.expand_path('../route.rb', __FILE__)
+      File.expand_path('../routes.rb', __FILE__)
   end
 end
