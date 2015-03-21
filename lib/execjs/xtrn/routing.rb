@@ -2,7 +2,7 @@ module ExecJS::Xtrn
   Rack=Proc.new do |arg|
     [
       200,
-      {"Content-Type"=> "text/yaml"},
+      {"Content-Type"=> "text/x-yaml"},
       [stats.as_json.to_yaml],
     ]
   end
