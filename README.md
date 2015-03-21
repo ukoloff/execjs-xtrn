@@ -100,7 +100,7 @@ it is `compile` that can load its code from file.
 
 `load` method (class' or instance's) detects whether its argument
 is code or path by first symbols of it. So, start path with `/`, `./`
-or `../` (but not from `//`). On Windows `\` and
+or `../` (but not from `//`). On Windows `\` and `C:` can be also used.
 
 Finally ExecJS::Xtrn patches ExecJS and installs those 4 class methods
 (`exec`, `eval`, `compile` and `load`) in it.
