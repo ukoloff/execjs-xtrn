@@ -1,4 +1,4 @@
-require_relative 'engine'
+require_relative 'nvm'
 
 class ExecJS::Xtrn::Wsh < ExecJS::Xtrn::Engine
 
