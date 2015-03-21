@@ -1,9 +1,18 @@
 module ExecJS::Xtrn
-  Rack=Proc.new do |arg|
+  Racks=YAML.load <<-EOY
+    -:
+      mime: text/x-yaml
+      dump: YAML
+    json:
+      mime: appication/json
+      dump: JSON
+  EOY
+  Rack=Proc.new do |req|
+    f=Racks[req['action_dispatch.request.path_parameters'][:format]]||Racks['-']
     [
       200,
-      {"Content-Type"=> "text/x-yaml"},
-      [stats.as_json.to_yaml],
+      {"Content-Type"=> f['mime']},
+      [f['dump'].constantize.dump(stats.as_json)],
     ]
   end
 end
