@@ -136,6 +136,9 @@ it installs additional path `/rails/jsx' to display its statistics
 
 It is one more reason not to use ExecJS::Xtrn in production mode ;-)
 
+By default statistics is output in YAML format, but you can
+get `/rails/jsx.json` or `/rails/jsx.html`.
+
 ## Compatibilty
 
 Not every JavaScript code behaves identically in ExecJS and ExecJS::Xtrn. In most cases it depends on how

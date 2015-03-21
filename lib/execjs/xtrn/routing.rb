@@ -29,7 +29,11 @@ module ExecJS::Xtrn::Rack
 
   # Dump as HTML
   def self.dump s
-    'Hi there!'
+    '<ul>'+
+    s.map do |k, v|
+      "<li><b>#{k}</b>#{Hash===v ? dump(v) : ": #{v}"}</li>"
+    end
+    .join('')+'</ul>'
   end
 end
 
