@@ -19,7 +19,7 @@ class ExecJS::Xtrn::Engine
     result['ok']
   end
 
-  PathX=[/^[.]{1,2}\/|^\/(?!\/)/]
+  PathX=[/^[.]{1,2}\/|^\/(?![\/*])/]
   PathX << /^[.]{0,2}\\|^\w:./i if Gem.win_platform?
 
   def load code
