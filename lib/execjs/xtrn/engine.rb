@@ -20,7 +20,7 @@ class ExecJS::Xtrn::Engine
   end
 
   PathX=[/^[.]{1,2}\/|^\/(?![\/*])/]
-  PathX << /^[.]{0,2}\\|^\w:./i if Gem.win_platform?
+  PathX << /^[.]{0,2}\\|^\w:./ if Gem.win_platform?
 
   def load code
     exec PathX.find{|re| re.match code} ? File.read(code) : code
