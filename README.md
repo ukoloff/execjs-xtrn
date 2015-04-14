@@ -200,6 +200,10 @@ it uses `Object.create` that is missing from WSH.
 To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh
 (sort of [ExecJS::Xtrn::Wsh::Preload](#preloading))
 
+Gem [coffee-script](https://rubygems.org/gems/coffee-script) since v2.4.0 introduces another incompatibility:
+it silently creates global function. This approach works in regular ExecJS but fails in ExecJS::Xtrn.
+As a workaround pin `coffee-script` gem version to 2.3.0.
+
 ## Testing
 
 After git checkout, required NPM modules must be installed. Simply run:
