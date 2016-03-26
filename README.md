@@ -204,6 +204,8 @@ Gem [coffee-script](https://rubygems.org/gems/coffee-script) since v2.4.0 introd
 it silently creates global function. This approach works in regular ExecJS but fails in ExecJS::Xtrn.
 As a workaround pin `coffee-script` gem version to 2.3.0.
 
+Later [uglifier](https://github.com/lautis/uglifier) from v3 started to use globals either. Pin it to '~> 2'.
+
 ## Testing
 
 After git checkout, required NPM modules must be installed. Simply run:
