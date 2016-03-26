@@ -1,13 +1,14 @@
+sudo: false
+cache: bundler
 language: ruby
 rvm:
   - '2.2'
   - '2.1'
   - '2.0'
   - 1.9.3
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y npm
 install:
+  - nvm install node
+  - node -v
   - gem install bundler
   - bundle install
   - bundle exec rake npm
