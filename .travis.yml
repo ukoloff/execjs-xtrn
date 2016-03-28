@@ -6,8 +6,11 @@ rvm:
   - '2.1'
   - '2.0'
   - 1.9.3
+env:
+  - NODEV=4
+  - NODEV=node
 install:
-  - nvm install node
+  - nvm install $NODEV
   - gem install bundler
   - bundle install
   - bundle exec rake npm
