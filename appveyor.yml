@@ -17,6 +17,7 @@ install:
   - bundle -v
   - bundle config --local path vendor/bundle
   - bundle install
+  - bundle exec rake npm
 
 build: off
 
