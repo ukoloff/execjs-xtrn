@@ -231,4 +231,4 @@ And `bundle exec` may be ommited in most cases.
   * [Node.js](http://nodejs.org/)
   * [Windows Script Host](http://en.wikipedia.org/wiki/Windows_Script_Host)
   * [Travis CI](https://travis-ci.org/)
-  * [AppVeyorAnchor ](http://www.appveyor.com/)
+  * [AppVeyor](http://www.appveyor.com/)
