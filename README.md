@@ -1,6 +1,7 @@
 # ExecJS::Xtrn
 
 [![Build Status](https://travis-ci.org/ukoloff/execjs-xtrn.svg?branch=master)](https://travis-ci.org/ukoloff/execjs-xtrn)
+[![Build status](https://ci.appveyor.com/api/projects/status/tw7av89nj591fg8w?svg=true)](https://ci.appveyor.com/project/ukoloff/execjs-xtrn)
 [![Gem Version](https://badge.fury.io/rb/execjs-xtrn.svg)](http://badge.fury.io/rb/execjs-xtrn)
 
 Drop-in replacement for ExecJS. The latter spawns separate process for every JavaScript compilation
@@ -229,3 +230,5 @@ And `bundle exec` may be ommited in most cases.
   * [therubyracer](https://github.com/cowboyd/therubyracer)
   * [Node.js](http://nodejs.org/)
   * [Windows Script Host](http://en.wikipedia.org/wiki/Windows_Script_Host)
+  * [Travis CI](https://travis-ci.org/)
+  * [AppVeyorAnchor ](http://www.appveyor.com/)
