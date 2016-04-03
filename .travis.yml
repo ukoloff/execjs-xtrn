@@ -1,9 +1,5 @@
 sudo: false
 
-cache:
-  directories:
-  - vendor/bundle
-
 language: ruby
 
 rvm:
@@ -13,12 +9,12 @@ rvm:
   - 1.9.3
 
 env:
-  - NODEV=4
   - NODEV=node
+  - NODEV=4
+  - NODEV=0
 
 install:
   - nvm install $NODEV
   - gem install bundler
-  - bundle config --local path vendor/bundle
   - bundle install
   - bundle exec rake npm
