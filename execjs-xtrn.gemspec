@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "coffee-script", '2.3.0'
   spec.add_development_dependency "uglifier", '~> 2'
+  spec.add_development_dependency "appveyor-worker"
 end
