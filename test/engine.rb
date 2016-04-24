@@ -103,7 +103,7 @@ class TestEngine < Minitest::Test
     instance_methods(false).grep(/^shag_/).each do |m|
       Engines.each_with_index  do |klass, idx|
         (1..Spawn).each do |n|
-          define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}_#{n}")do
+          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_#{n}")do
             skip unless @engine=(@@engines||=engines)[n-1][idx]
             send m
           end
@@ -113,7 +113,7 @@ class TestEngine < Minitest::Test
 
     instance_methods(false).grep(/^klas_/).each do |m|
       Engines.each do |klass|
-          define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}_class")do
+          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_class")do
             skip unless klass::Valid
             @class=klass
             send m
@@ -131,7 +131,7 @@ class TestEngine < Minitest::Test
     z = s.map do |k, v|
       "#{' '*(len-k.length)}#{k}: "+
       v.map do |kx, vx|
-        "#{kx}=#{vx.round(3).to_s.sub /[.]?0*$/, ''}"
+        "#{kx}=#{vx.round(3).to_s.sub(/[.]?0*$/, '')}"
       end * ', '
     end * "\n"
     puts z
