@@ -18,7 +18,7 @@ class TestChild < Shagi
     ancestors[1].instance_methods(false).grep(/^shag_/).each do |m|
       Children.each_with_index  do |klass, idx|
         (1..Spawn).each do |n|
-          define_method("test_#{m.to_s.sub /.*?_/, ''}_#{klass.name.split(/\W+/).last}_#{n}")do
+          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_#{n}")do
             skip unless @child=(@@children||=children)[n-1][idx]
             send m
           end
