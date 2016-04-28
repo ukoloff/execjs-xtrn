@@ -14,8 +14,14 @@ module ExecJS::Xtrn
   # Install into ExecJS
   def self.init
     slf=self
-    sc=(class<<ExecJS;self;end)
-    Engine.methods(false).each{|m| sc.instance_eval{define_method(m){|*args| slf.engine.send m, *args }}}
+    sc=(class << ExecJS; self ;end)
+    Engine.methods(false).each do |m|
+      sc.instance_eval do
+        define_method(m) do |*args|
+          slf.engine.send m, *args
+        end
+      end
+    end
   end
 
   init

@@ -124,18 +124,4 @@ class TestEngine < Minitest::Test
 
   build
 
-  ObjectSpace.define_finalizer(M)do
-    puts "Statistics:"
-    s=M.stats
-    len=s.keys.map(&:length).max+1
-    z = s.map do |k, v|
-      "#{' '*(len-k.length)}#{k}: "+
-      v.map do |kx, vx|
-        "#{kx}=#{vx.round(3).to_s.sub(/[.]?0*$/, '')}"
-      end * ', '
-    end * "\n"
-    puts z
-    AppVeyor::Worker.message "Compilations: #{s['Engine'][:n]}", z
-  end
-
 end
