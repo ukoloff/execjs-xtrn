@@ -1,5 +1,6 @@
 require 'coffee-script'
 require 'uglifier'
+
 ExecJS::Xtrn.init
 
 class TestTop < Minitest::Test
@@ -68,6 +69,22 @@ class TestTop < Minitest::Test
     assert_equal 4, ExecJS.compile.eval('C')
     ExecJS::Xtrn.engine=e
     assert_equal 42, ExecJS.eval('21*2')
+  end
+
+  def test_info
+    at_exit do
+      puts "Statistics:"
+      s=ExecJS::Xtrn.stats
+      len=s.keys.map(&:length).max+1
+      z = s.map do |k, v|
+        "#{' '*(len-k.length)}#{k}: "+
+        v.map do |kx, vx|
+          "#{kx}=#{vx.round(3).to_s.sub(/[.]?0*$/, '')}"
+        end * ', '
+      end * "\n"
+      puts z
+      AppVeyor::Worker.message "Compilations: #{s['Engine'][:n]}", z
+    end
   end
 
 end
