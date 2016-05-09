@@ -2,6 +2,8 @@
 # Using VM with Engine
 #
 
+require_relative 'engine'
+
 module ExecJS::Xtrn::VM
 
   Error = ExecJS::Xtrn::Error

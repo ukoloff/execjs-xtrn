@@ -1,4 +1,4 @@
-require_relative 'engine'
+require_relative 'vm'
 
 class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
 
