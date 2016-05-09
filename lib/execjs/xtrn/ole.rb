@@ -27,14 +27,16 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
       i: 0, # in bytes
       t: Time.now # time spent
     }
-    result = parse vm.eval "new Function(#{JSON.dump code})()"
-  rescue WIN32OLERuntimeError=>e
-    raise Error.new e
-  ensure
-    delta[:t]=Time.now-delta[:t]
-    delta[:i]=code.length
-    delta[:o]=JSON.dump(result).length if result
-    @statz.each{|var| delta.each{|k, v| var[k]||=0; var[k]+=v}}
+    begin
+      result = parse vm.eval "new Function(#{JSON.dump code})()"
+    rescue WIN32OLERuntimeError=>e
+      raise Error.new e
+    ensure
+      delta[:t]=Time.now-delta[:t]
+      delta[:i]=code.length
+      delta[:o]=JSON.dump(result).length if result
+      @statz.each{|var| delta.each{|k, v| var[k]||=0; var[k]+=v}}
+    end
   end
 
   private
