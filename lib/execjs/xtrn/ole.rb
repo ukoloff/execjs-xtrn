@@ -52,6 +52,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     @statz=[@stats, @@stats, eStats]
     @vm = WIN32OLE.new 'ScriptControl'
     @vm.Language = 'JScript'
+    @vm.addCode File.read ES5
     @vm
   end
 
@@ -59,16 +60,16 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
 
   def json
     return @@json if @@json
-    @@json = WIN32OLE.new 'ScriptControl'
-    @@json.Language = 'JScript'
-    @@json.addCode File.read Json2
-    @@json.addCode <<-EOJ
+    @@json = j = WIN32OLE.new 'ScriptControl'
+    j.Language = 'JScript'
+    j.addCode File.read Json2
+    j.addCode <<-EOJ
       function jsonDump(o)
       {
         return JSON.stringify(o)
       }
     EOJ
-    @@json
+    j
   end
 
   def parse result
