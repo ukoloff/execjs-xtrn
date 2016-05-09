@@ -21,7 +21,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
       i: 0, # in bytes
       t: Time.now # time spent
     }
-    result = vm.eval "new Function(#{JSON.dump code})()"
+    result = parse vm.eval "new Function(#{JSON.dump code})()"
   rescue WIN32OLERuntimeError=>e
     raise Error.new "Win32::OLE Error"
   ensure
@@ -32,6 +32,8 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
   end
 
   private
+
+  Json2 = File.expand_path('../../wsh/json2.js', __FILE__)
 
   @stats = @@stats = {c: 0}
 
@@ -45,6 +47,29 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     @vm = WIN32OLE.new 'ScriptControl'
     @vm.Language = 'JScript'
     @vm
+  end
+
+  @@json = nil
+
+  def json
+    return @@json if @@json
+    @@json = WIN32OLE.new 'ScriptControl'
+    @@json.Language = 'JScript'
+    @@json.addCode File.read Json2
+    @@json.addCode <<-EOJ
+      function jsonDump(o)
+      {
+        return JSON.stringify(o)
+      }
+    EOJ
+    @@json
+  end
+
+  def parse result
+    WIN32OLE===result ?
+      JSON.parse(json.run 'jsonDump', result)
+    :
+      result
   end
 
 end
