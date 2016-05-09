@@ -5,5 +5,5 @@ require_relative 'wsh'
 require_relative 'vm'
 
 class ExecJS::Xtrn::Wvm < ExecJS::Xtrn::Wsh
-  extend ExecJS::Xtrn::VM
+  include ExecJS::Xtrn::VM
 end

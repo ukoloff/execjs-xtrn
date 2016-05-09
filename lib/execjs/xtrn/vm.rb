@@ -4,6 +4,8 @@
 
 module ExecJS::Xtrn::VM
 
+  Error = ExecJS::Xtrn::Error
+
   def exec(code)
     return if (code=code.to_s.strip).length==0
     result=say vm: vm, js: code

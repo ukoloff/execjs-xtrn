@@ -5,5 +5,5 @@ require_relative 'node'
 require_relative 'vm'
 
 class ExecJS::Xtrn::Nvm < ExecJS::Xtrn::Node
-  extend ExecJS::Xtrn::VM
+  include ExecJS::Xtrn::VM
 end
