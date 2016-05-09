@@ -33,8 +33,8 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
       raise Error.new e
     ensure
       delta[:t]=Time.now-delta[:t]
-      delta[:i]=code.length
-      delta[:o]=JSON.dump(result).length if result
+      delta[:o]=code.length
+      delta[:i]=JSON.dump(result).length if result
       @statz.each{|var| delta.each{|k, v| var[k]||=0; var[k]+=v}}
     end
   end
