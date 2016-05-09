@@ -36,18 +36,21 @@ The latter will be monkey-patched.
 ExecJS::Xtrn uses two external JavaScript runners:
 
   * Windows Script Host
+    - Via external program `cscript.exe`
+    - Direct call to `ScriptControl` ActiveX
   * Node.js in two modes:
     - Simple (1 execution context = 1 external process)
     - Nvm (all execution contexts share single external process using [vm API](http://nodejs.org/api/vm.html))
 
 Nvm engine has nothing common with [nvm](https://github.com/creationix/nvm).
 
-So, there exist *four* engines:
+So, there exist *five* engines:
 
   * Engine - absctract engine (smart enough to execute blank lines)
   * Wsh - engine using WSH (CScript)
+  * Ole - engine using ActiveX (no external processes at all)
   * Node - engine using Node.js (separate process for every execution context)
-  * Nvm - engine using Node.js and vm API (single process)
+  * Nvm - engine using Node.js and vm API (single external process)
 
 All engines autodetect their availability at startup (on `require 'execjs/xtrn'`) and sets `Valid` constants.
 Eg on MS Windows ExecJS::Xtrn::Wsh::Valid = true, on Linux - false
