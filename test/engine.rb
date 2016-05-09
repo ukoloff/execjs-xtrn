@@ -93,31 +93,24 @@ class TestEngine < Minitest::Test
     end
   end
 
-  def engines
-    (1..Spawn).map do
-      Engines.map{|k| k::Valid ? k.compile : nil }
-    end
-  end
-
   def self.build
-    instance_methods(false).grep(/^shag_/).each do |m|
-      Engines.each_with_index  do |klass, idx|
-        (1..Spawn).each do |n|
-          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_#{n}")do
-            skip unless @engine=(@@engines||=engines)[n-1][idx]
+    Engines.each do |klass|
+      kname=klass.name.split(/\W+/).last
+      instance_methods(false).grep(/^klas_/).each do |m|
+        define_method "test_class_#{kname}_" + m.to_s.sub(/.*?_/, '') do
+          skip unless klass::Valid
+          @class=klass
+          send m
+        end
+      end
+      (1..Spawn).each do |n|
+        instance_methods(false).grep(/^shag_/).each do |m|
+          define_method "test_#{kname}_#{n}_" + m.to_s.sub(/.*?_/, '') do
+            skip unless klass::Valid
+            @engine = klass.new
             send m
           end
         end
-      end
-    end
-
-    instance_methods(false).grep(/^klas_/).each do |m|
-      Engines.each do |klass|
-          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_class")do
-            skip unless klass::Valid
-            @class=klass
-            send m
-          end
       end
     end
   end
