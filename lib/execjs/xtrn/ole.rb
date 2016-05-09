@@ -2,6 +2,12 @@ require_relative 'wsh'
 
 class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
 
+  class Error < ExecJS::Xtrn::Error
+    def initialize error
+      super
+    end
+  end
+
   def self.valid?
     return unless Gem.win_platform?
     require 'win32ole'
@@ -23,7 +29,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     }
     result = parse vm.eval "new Function(#{JSON.dump code})()"
   rescue WIN32OLERuntimeError=>e
-    raise Error.new "Win32::OLE Error"
+    raise Error.new e
   ensure
     delta[:t]=Time.now-delta[:t]
     delta[:i]=code.length
