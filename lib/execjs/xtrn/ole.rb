@@ -22,6 +22,8 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
       t: Time.now # time spent
     }
     result = vm.eval "new Function(#{JSON.dump code})()"
+  rescue WIN32OLERuntimeError=>e
+    raise Error.new "Win32::OLE Error"
   ensure
     delta[:t]=Time.now-delta[:t]
     delta[:i]=code.length
