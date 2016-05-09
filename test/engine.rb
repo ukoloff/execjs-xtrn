@@ -76,15 +76,20 @@ class TestEngine < Minitest::Test
   end
 
   def klas_preload
-    res=@class.name[-1]
-    res='em' if 'm'==res
+    res=@class.ancestors.reverse.map do |k|
+      defined?(k::Preload) ?
+        k.name.sub(/.*\W/, '')
+      :
+        nil
+    end.compact * ', '
 
     Spawn.times do
       begin
-        Engines.shuffle.each{|e| e::Preload << "_preload.#{e.name[-1]}=1"}
-        M::Engine::Preload << '!function(){this._preload={}}()'
+        Engines.each{|e| e::Preload << "_preload.#{e.name.sub(/.*\W/, '')}=1"}
 
-        assert_equal res, @class.eval('_preload').keys*''
+        M::Engine::Preload << '!function(){this._preload={Engine: 1}}()'
+
+        assert_equal res, @class.eval('_preload').keys * ', '
 
       ensure
         Engines.each{|e| e::Preload.clear}
