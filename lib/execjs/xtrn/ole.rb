@@ -16,9 +16,9 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     return if (code=code.to_s.strip).length==0
     result = nil
     delta={
-      n: 1, # say calls
-      i: 0, # in bytes
+      n: 1, # calls
       o: 0, # out bytes
+      i: 0, # in bytes
       t: Time.now # time spent
     }
     result = vm.eval "new Function(#{JSON.dump code})()"
@@ -37,7 +37,9 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     return @vm if @vm
     @stats||={}
     @@stats[:c]+=1
-    @statz=[@stats, @@stats]
+    eStats = ExecJS::Xtrn::Engine.class_eval{@stats}
+    eStats[:c]+=1
+    @statz=[@stats, @@stats, eStats]
     @vm = WIN32OLE.new 'ScriptControl'
     @vm.Language = 'JScript'
     @vm
