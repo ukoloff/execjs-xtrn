@@ -43,26 +43,24 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
 
   Json2 = File.expand_path('../../wsh/json2.js', __FILE__)
 
-  @stats = @@stats = {c: 0}
-
   def vm
     return @vm if @vm
-    @stats||={}
-    @@stats[:c]+=1
-    eStats = ExecJS::Xtrn::Engine.class_eval{@stats}
-    eStats[:c]+=1
-    @statz=[@stats, @@stats, eStats]
-    @vm = WIN32OLE.new 'ScriptControl'
-    @vm.Language = 'JScript'
-    @vm.addCode File.read ES5
-    @vm
+    @statz = [
+      @stats||={},
+      self.class.class_stats,
+      ExecJS::Xtrn::Engine.class_stats
+    ]
+    vm = WIN32OLE.new 'ScriptControl'
+    vm.Language = 'JScript'
+    vm.addCode File.read ES5
+    @vm = vm
   end
 
   @@json = nil
 
   def json
     return @@json if @@json
-    @@json = j = WIN32OLE.new 'ScriptControl'
+    j = WIN32OLE.new 'ScriptControl'
     j.Language = 'JScript'
     j.addCode File.read Json2
     j.addCode <<-EOJ
@@ -71,7 +69,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
         return JSON.stringify(o)
       }
     EOJ
-    j
+    @@json = j
   end
 
   def parse result
