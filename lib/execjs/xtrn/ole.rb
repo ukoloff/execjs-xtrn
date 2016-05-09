@@ -48,7 +48,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     @statz = [
       @stats||={},
       self.class.class_stats,
-      ExecJS::Xtrn::Engine.class_stats
+      ExecJS::Xtrn::Engine.class_stats(0)
     ]
     vm = WIN32OLE.new 'ScriptControl'
     vm.Language = 'JScript'
