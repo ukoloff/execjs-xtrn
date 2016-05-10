@@ -4,7 +4,8 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
 
   class Error < ExecJS::Xtrn::Error
     def initialize error
-      super
+      # In addition, say: $stdout.set_encoding Encoding.default_external
+      super error.message.force_encoding Encoding.default_external
     end
   end
 
