@@ -3,14 +3,14 @@ sudo: false
 language: ruby
 
 rvm:
+  - '2.3'
   - '2.2'
   - '2.1'
   - '2.0'
-  - 1.9.3
 
 env:
   - NODEV=node
-  - NODEV=4
+  - NODEV=5
   - NODEV=0
 
 install:
