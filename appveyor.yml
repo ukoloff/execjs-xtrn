@@ -9,7 +9,6 @@ environment:
     - RUBY_VERSION: 22
     - RUBY_VERSION: 21
     - RUBY_VERSION: 200
-    - RUBY_VERSION: 193
 
 install:
   - ps: Install-Product node 6

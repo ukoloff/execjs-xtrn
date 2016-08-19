@@ -14,6 +14,7 @@ class ExecJS::Xtrn::Child
     }
     @stdin.puts delta[:o]=JSON.generate([obj])[1...-1]
     i=@stdout.gets
+    i.force_encoding 'UTF-8'
 
     delta[:t]=Time.now-delta[:t]
     delta[:i]=i.length
