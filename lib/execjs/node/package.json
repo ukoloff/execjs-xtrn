@@ -1,7 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "split": "^0.3.0",
-    "through": "^2.3.6"
+    "split": "^1.0.0"
   }
 }
