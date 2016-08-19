@@ -10,7 +10,6 @@ rvm:
 
 env:
   - NODEV=node
-  - NODEV=4
   - NODEV=0
 
 install:
