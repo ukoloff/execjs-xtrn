@@ -78,4 +78,8 @@ class Shagi < Minitest::Test
     assert_operator rc[:c], :>, 0
   end
 
+  def shag_es5
+    assert_ok 7, 'return Object.create({a: 7}).a'
+  end
+
 end
