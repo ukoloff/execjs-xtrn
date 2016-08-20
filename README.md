@@ -203,7 +203,8 @@ CoffeeScript since v1.9.0 introduces new incompatibility:
 it uses `Object.create` that is missing from WSH.
 To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh
 (sort of [ExecJS::Xtrn::Wsh::Preload](#preloading)).
-Path to this polyfill is available as `ExecJS::Xtrn::Wsh::ES5` constant.
+Path to [this polyfill](lib/execjs/wsh/es5.js) is available as
+`ExecJS::Xtrn::Wsh::ES5` constant.
 
 Gem [coffee-script](https://rubygems.org/gems/coffee-script) since v2.4.0 introduces another incompatibility:
 it silently creates global function. This approach works in regular ExecJS but fails in ExecJS::Xtrn.
