@@ -100,19 +100,23 @@ class TestEngine < Minitest::Test
 
   def self.build
     Engines.each do |klass|
+      valid = klass::Valid
       kname=klass.name.split(/\W+/).last
+      prefix = "test_#{kname}::"
       instance_methods(false).grep(/^klas_/).each do |m|
-        define_method "test_class_#{kname}_" + m.to_s.sub(/.*?_/, '') do
-          skip unless klass::Valid
+        define_method  prefix + m.to_s.sub(/.*?_/, '') do
+          skip unless valid
           @class=klass
           send m
         end
       end
       (1..Spawn).each do |n|
+        prefix = "test_#{kname}[#{n}]"
+        engine = klass.new if valid
         instance_methods(false).grep(/^shag_/).each do |m|
-          define_method "test_#{kname}_#{n}_" + m.to_s.sub(/.*?_/, '') do
-            skip unless klass::Valid
-            @engine = klass.new
+          define_method  prefix + m.to_s.sub(/.*?_/, '') do
+            skip unless valid
+            @engine = engine
             send m
           end
         end
