@@ -15,14 +15,14 @@ class TestVm < Shagi
       child = M::Child.new ch::Run if valid
       (1..Spawn).each do |n|
         vm = child.say(vm: 0)['vm'] if valid
-          ancestors[1].instance_methods(false).grep(/^shag_/).each do |m|
-            define_method("#{prefix}#{m.to_s.sub(/.*?_/, '')}_#{n}")do
-              skip unless valid
-              @child = child
-              @vm = vm
-              send m
-            end
+        ancestors[1].instance_methods(false).grep(/^shag_/).each do |m|
+          define_method("#{prefix}#{m.to_s.sub(/.*?_/, '')}_#{n}")do
+            skip unless valid
+            @child = child
+            @vm = vm
+            send m
           end
+        end
       end
     end
   end
