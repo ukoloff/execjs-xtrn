@@ -1,6 +1,6 @@
 require_relative 'shagi'
 
-class TestNvm < Shagi
+class TestVm < Shagi
 
   Child=M::Nvm
 
