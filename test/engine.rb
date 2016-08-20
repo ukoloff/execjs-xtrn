@@ -5,7 +5,7 @@ class TestEngine < Minitest::Test
   M=ExecJS::Xtrn
 
   Spawn=5
-  Engines=M::Engines
+  Engines=M::Engines << M::Ole
   Engines.each{|e| e::Preload=[]}
   M::Engine::Preload=[]
 
@@ -76,15 +76,20 @@ class TestEngine < Minitest::Test
   end
 
   def klas_preload
-    res=@class.name[-1]
-    res='em' if 'm'==res
+    res=@class.ancestors.reverse.map do |k|
+      defined?(k::Preload) ?
+        k.name.sub(/.*\W/, '')
+      :
+        nil
+    end.compact * ', '
 
     Spawn.times do
       begin
-        Engines.shuffle.each{|e| e::Preload << "_preload.#{e.name[-1]}=1"}
-        M::Engine::Preload << '!function(){this._preload={}}()'
+        Engines.each{|e| e::Preload << "_preload.#{e.name.sub(/.*\W/, '')}=1"}
 
-        assert_equal res, @class.eval('_preload').keys*''
+        M::Engine::Preload << '!function(){this._preload={Engine: 1}}()'
+
+        assert_equal res, @class.eval('_preload').keys * ', '
 
       ensure
         Engines.each{|e| e::Preload.clear}
@@ -93,31 +98,28 @@ class TestEngine < Minitest::Test
     end
   end
 
-  def engines
-    (1..Spawn).map do
-      Engines.map{|k| k::Valid ? k.compile : nil }
-    end
-  end
-
   def self.build
-    instance_methods(false).grep(/^shag_/).each do |m|
-      Engines.each_with_index  do |klass, idx|
-        (1..Spawn).each do |n|
-          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_#{n}")do
-            skip unless @engine=(@@engines||=engines)[n-1][idx]
+    Engines.each do |klass|
+      valid = klass::Valid
+      kname=klass.name.split(/\W+/).last
+      prefix = "test_#{kname}::"
+      instance_methods(false).grep(/^klas_/).each do |m|
+        define_method  prefix + m.to_s.sub(/.*?_/, '') do
+          skip unless valid
+          @class=klass
+          send m
+        end
+      end
+      (1..Spawn).each do |n|
+        prefix = "test_#{kname}[#{n}]"
+        engine = klass.new if valid
+        instance_methods(false).grep(/^shag_/).each do |m|
+          define_method  prefix + m.to_s.sub(/.*?_/, '') do
+            skip unless valid
+            @engine = engine
             send m
           end
         end
-      end
-    end
-
-    instance_methods(false).grep(/^klas_/).each do |m|
-      Engines.each do |klass|
-          define_method("test_#{m.to_s.sub(/.*?_/, '')}_#{klass.name.split(/\W+/).last}_class")do
-            skip unless klass::Valid
-            @class=klass
-            send m
-          end
       end
     end
   end
