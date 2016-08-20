@@ -5,7 +5,7 @@ class TestEngine < Minitest::Test
   M=ExecJS::Xtrn
 
   Spawn=5
-  Engines=M::Engines << M::Ole
+  Engines=M::Engines
   Engines.each{|e| e::Preload=[]}
   M::Engine::Preload=[]
 

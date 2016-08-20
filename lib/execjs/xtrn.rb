@@ -2,7 +2,7 @@ require_relative "xtrn/rails"
 
 module ExecJS::Xtrn
 
-  Engines=[Nvm, Node, Wsh]
+  Engines=[Nvm, Node, Wsh, Wvm, Ole]
 
   class << self
     attr_accessor :engine

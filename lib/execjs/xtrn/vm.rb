@@ -36,7 +36,7 @@ module ExecJS::Xtrn::VM
     @stats={}                 # Our new stats
     vm=say({vm: 0})['vm']
     raise Error, 'Cannot create VM' unless vm
-    cs=self.class.class_eval{@stats}
+    cs=self.class.class_stats 0
     cs[:m]||=0
     cs[:m]+=1
     ObjectSpace.define_finalizer(self)do
@@ -44,7 +44,7 @@ module ExecJS::Xtrn::VM
       cs[:x]+=1
       c.say vm: vm rescue nil
     end
-    @vm=vm
+    @vm = vm
   end
 
 end
