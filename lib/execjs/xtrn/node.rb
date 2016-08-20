@@ -7,7 +7,7 @@ class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
     path: 'node',
   }
 
-  Names=%w(nodejs node)
+  Names=%w(nodejs node iojs)
 
   def self.valid?
     i=Names.index do |n|
