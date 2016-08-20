@@ -80,6 +80,15 @@ class Shagi < Minitest::Test
 
   def shag_es5
     assert_ok 7, 'return Object.create({a: 7}).a'
+    assert_ok ['one', 'two'], 'return Object.keys({one: 1, two: 2})'
+    assert_ok 2, 'return [5, 6, 7, 8].indexOf(7)'
+    assert_ok -1, 'return [5, 6, 7, 8].indexOf(3)'
+    assert_ok [1,3], 'return [1, 2, 3, 4].filter(function(n){return n&1})'
+    assert_ok 'pqr', <<-EOJ
+      var s=''
+      'p q r'.split(' ').forEach(function(n){s+=n})
+      return s
+    EOJ
   end
 
 end
