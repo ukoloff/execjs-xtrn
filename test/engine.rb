@@ -56,7 +56,7 @@ class TestEngine < Minitest::Test
   end
 
   def shag_unicode
-    ints = rand(200..300).times.map{rand 1<<15}
+    ints = rand(200..300).times.map{rand 1...1<<15}
     chars = ints.pack 'U*'
     assert_equal chars, @engine.eval("String.fromCharCode(#{ints * ','})")
     assert_equal ints, @engine.eval(<<-EOJ
