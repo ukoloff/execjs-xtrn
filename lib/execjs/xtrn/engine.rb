@@ -11,7 +11,7 @@ class ExecJS::Xtrn::Engine
 
   def exec(code)
     return if (code=code.to_s.strip).length==0
-    result=child.say code
+    result=say code
     result={'err'=>'Invalid JS result'} unless Hash===result
     raise Error, result['err'] if result['err']
     result['ok']
@@ -59,7 +59,7 @@ class ExecJS::Xtrn::Engine
 
   private
 
-  def self.class_stats(increment = 1)
+  def self.class_stats increment = 1
     s = @stats ||= {c: 0}
     s[:c] += increment
     s
@@ -79,6 +79,10 @@ class ExecJS::Xtrn::Engine
     c = self.class.child
     c.stats @stats = {}
     @child = c
+  end
+
+  def say code
+    child.say code
   end
 
   def initialize
