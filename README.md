@@ -38,29 +38,38 @@ ExecJS::Xtrn uses two external JavaScript runners:
   * Windows Script Host
     - Via external program `cscript.exe`
     - Direct call to `ScriptControl` ActiveX
-  * Node.js in two modes:
+  * Node.js
+
+In addition, both runners allow two usage modes:
     - Simple (1 execution context = 1 external process)
-    - Nvm (all execution contexts share single external process using [vm API](http://nodejs.org/api/vm.html))
+    - Virtual machines (all execution contexts share single external process)
+
+So, there exist *six* engines:
+
+  * Engine - abstract engine (smart enough to execute blank lines)
+  * Wsh - WSH/CScript in simple mode
+  * Wvm - WSH/CScript with virtual machines (via `ScriptControl` ActiveX again)
+  * Ole - WSH via ActiveX (no external processes at all)
+  * Node - Node.js in simple mode
+  * Nvm - Node.js' [vm API](http://nodejs.org/api/vm.html)
 
 Nvm engine has nothing common with [nvm](https://github.com/creationix/nvm).
-
-So, there exist *five* engines:
-
-  * Engine - absctract engine (smart enough to execute blank lines)
-  * Wsh - engine using WSH (CScript)
-  * Ole - engine using ActiveX (no external processes at all)
-  * Node - engine using Node.js (separate process for every execution context)
-  * Nvm - engine using Node.js and vm API (single external process)
 
 All engines autodetect their availability at startup (on `require 'execjs/xtrn'`) and sets `Valid` constants.
 Eg on MS Windows ExecJS::Xtrn::Wsh::Valid = true, on Linux - false
 
+Ole engine is unavailable for 64-bit Ruby
+(since `ScriptControl` ActiveX is 32 bit).
+Wvm engine meets the same trouble,
+but it has been reenabled with some workaround.
+
 One of available engines is made default engine for ExecJS.
 If Node.js is available it is Nvm.
 Else, if running on Windows it is Wsh.
-Else it is Engine, so ExecJS is made unusable.
+Else it is Engine, so ExecJS is made almost unusable.
 
-Default engine can be shown/changed at any moment with `ExecJS::Xtrn.engine` accessor, eg
+Default engine can be shown/changed at any moment with
+`ExecJS::Xtrn.engine` accessor, eg
 
 ```ruby
 ExecJS::Xtrn.engine=ExecJS::Xtrn::Node
