@@ -70,14 +70,15 @@ class ExecJS::Xtrn::Engine
     ExecJS::Xtrn::Child.new self::Run
   end
 
+  def self.child
+    bear.tap {|c| c.stats self.class_stats, ExecJS::Xtrn::Engine.class_stats}
+  end
+
   def child
     return @child if @child
-    raise NotImplementedError, self.class unless self.class::Run
-    child = ExecJS::Xtrn::Child.new self.class::Run
-    child.stats @stats = {},
-      self.class.class_stats,
-      ExecJS::Xtrn::Engine.class_stats
-    @child = child
+    c = self.class.child
+    c.stats @stats = {}
+    @child = c
   end
 
   def initialize
