@@ -55,6 +55,22 @@ class TestEngine < Minitest::Test
     assert_equal @engine.class.stats[:c], 1 if M::VM===@engine
   end
 
+  def shag_unicode
+    ints = rand(200..300).times.map{rand 1<<15}
+    chars = ints.pack 'U*'
+    assert_equal chars, @engine.eval("String.fromCharCode(#{ints * ','})")
+    assert_equal ints, @engine.eval(<<-EOJ
+      (function(s)
+      {
+        var result = []
+        for(var i = s.length - 1; i>=0; i--)
+          result.push(s.charCodeAt(i))
+        return result.reverse()
+      })(#{JSON.dump chars})
+    EOJ
+    )
+  end
+
   def klas_methods
     assert_equal 4, @class.exec('return 2*2')
     assert_equal 6, @class.eval('({x: 1+2+3}).x')

@@ -12,6 +12,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
   def self.valid?
     return unless Gem.win_platform?
     require 'win32ole'
+    WIN32OLE.codepage = WIN32OLE::CP_UTF8
     WIN32OLE.new 'ScriptControl'
     true
   rescue
