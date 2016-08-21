@@ -12,7 +12,7 @@ class TestChild < Shagi
     Children.each  do |ch|
       valid = ch::Valid
       (1..Spawn).each do |n|
-        child = M::Child.new ch::Run if valid
+        child = ch.bear if valid
         prefix = "test_#{ch.name.split(/\W+/).last}[#{n}]"
         shagi.each do |k, v|
           define_method prefix + v do

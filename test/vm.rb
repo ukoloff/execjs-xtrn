@@ -11,7 +11,7 @@ class TestVm < Shagi
   def self.build
     Children.each do |ch|
       valid = ch::Valid
-      child = M::Child.new ch::Run if valid
+      child = ch.bear if valid
       (1..Spawn).each do |n|
         vm = child.say(vm: 0)['vm'] if valid
         prefix = "test_#{ch.name.split(/\W+/).last}[#{n}]"
