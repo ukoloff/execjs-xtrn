@@ -41,8 +41,8 @@ ExecJS::Xtrn uses two external JavaScript runners:
   * Node.js
 
 In addition, both runners allow two usage modes:
-    - Simple (1 execution context = 1 external process)
-    - Virtual machines (all execution contexts share single external process)
+  - Simple (1 execution context = 1 external process)
+  - Virtual machines (all execution contexts share single external process)
 
 So, there exist *six* engines:
 
