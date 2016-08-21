@@ -65,6 +65,11 @@ class ExecJS::Xtrn::Engine
     s
   end
 
+  def self.bear
+    raise NotImplementedError, self unless self::Run
+    ExecJS::Xtrn::Child.new self::Run
+  end
+
   def child
     return @child if @child
     raise NotImplementedError, self.class unless self.class::Run

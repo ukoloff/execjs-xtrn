@@ -12,5 +12,5 @@ class ExecJS::Xtrn::Wsh < ExecJS::Xtrn::Engine
 
   Valid=Gem.win_platform?
 
-  exec '//' rescue nil if Valid # Warm up
+  bear.say '//' rescue nil if Valid # Warm up
 end
