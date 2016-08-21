@@ -5,43 +5,39 @@
 require_relative 'engine'
 
 module ExecJS::Xtrn::VM
+  private
 
   Error = ExecJS::Xtrn::Error
 
-  def exec(code)
-    return if (code=code.to_s.strip).length==0
-    result=say vm: vm, js: code
-    result={'err'=>'Invalid JS result'} unless Hash===result
-    raise Error, result['err'] if result['err']
-    result['ok']
+  def self.included base
+    def base.child # override class.child
+      @child ||= super  # Single child for engine
+    end
   end
-
-  private
 
   def child
-    @@child||=super
+    @child ||= self.class.child
   end
 
-  def say(code)
-    ch=@@child
-    @stats[:once]=1
-    ch.stats @stats
-    ch.say code
+  def say code
+    @stats ||= {}
+    @stats[:once] = 1
+    c = child
+    c.stats @stats
+    c.say vm: vm, js: code
   end
 
   def vm
     return @vm if @vm
-    c=child
-    @stats[:once]=1 if @stats # Remove @stats, added by Engine
-    @stats={}                 # Our new stats
-    vm=say({vm: 0})['vm']
+    c = child
+    vm = c.say({vm: 0})['vm']
     raise Error, 'Cannot create VM' unless vm
-    cs=self.class.class_stats 0
-    cs[:m]||=0
-    cs[:m]+=1
-    ObjectSpace.define_finalizer(self)do
-      cs[:x]||=0
-      cs[:x]+=1
+    cs = self.class.class_stats 0
+    cs[:m] ||= 0
+    cs[:m] += 1
+    ObjectSpace.define_finalizer self do
+      cs[:x] ||= 0
+      cs[:x] += 1
       c.say vm: vm rescue nil
     end
     @vm = vm

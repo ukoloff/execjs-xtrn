@@ -52,7 +52,7 @@ class TestEngine < Minitest::Test
     assert_equal s[:n], @engine.stats[:n]
     @engine.exec '[]'
     assert_equal s[:n]+1, @engine.stats[:n]
-    assert_equal 1, M::Nvm.stats[:c]||1
+    assert_equal @engine.class.stats[:c], 1 if M::VM===@engine
   end
 
   def klas_methods

@@ -10,12 +10,12 @@ class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
   Names=%w(nodejs node iojs)
 
   def self.valid?
-    i=Names.index do |n|
-      Run[:args][0]=n
-      {"ok"=>42}==ExecJS::Xtrn::Child.new(Run).say('return 7*6') rescue nil
+    Names.each do |n|
+      Run[:args][0] = n
+      return true if {"ok"=>42} === bear.say('return 7*6') rescue nil
     end
-    Run[:args][0]='!' unless i
-    !!i
+    Run[:args][0]='!'
+    false
   end
 
   Valid=valid?
