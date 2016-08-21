@@ -18,6 +18,12 @@ class Shagi < Minitest::Test
     assert say(code)['err']
   end
 
+  def self.shagi
+    ancestors[1].instance_methods(false).grep(/^shag_/).map do |m|
+      [m, m.to_s.sub(/.*?_/, '')]
+    end
+  end
+
   def shag_math
     treba_ok 42, 'return 6*7'
     treba_ok 3,  'return Math.round(Math.PI)'

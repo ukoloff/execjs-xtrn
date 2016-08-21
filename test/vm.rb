@@ -15,12 +15,12 @@ class TestVm < Shagi
       (1..Spawn).each do |n|
         vm = child.say(vm: 0)['vm'] if valid
         prefix = "test_#{ch.name.split(/\W+/).last}[#{n}]"
-        ancestors[1].instance_methods(false).grep(/^shag_/).each do |m|
-          define_method(prefix + m.to_s.sub(/.*?_/, ''))do
+        shagi.each do |k, v|
+          define_method prefix + v do
             skip unless valid
             @child = child
             @vm = vm
-            send m
+            send k
           end
         end
       end
