@@ -4,3 +4,4 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'json', "#{/^1[.]/.match(RUBY_VERSION)? '~>' : '>='} 1.8"
+gem "appveyor-worker" if ENV['APPVEYOR_API_URL']
