@@ -100,7 +100,7 @@ pass argument to it, destroy that context and return its result.
 Using these class methods is not recommended, since it's just what ExecJS does
 (except for Nvm engine).
 
-Engine class also has `compile` method that combines `new` and `exec`
+Engine class also has `compile` method that combines `new` and `eval`
 and returns execution context.
 This is how ExecJS is used in most cases.
 

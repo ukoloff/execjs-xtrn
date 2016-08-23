@@ -9,7 +9,7 @@ class ExecJS::Xtrn::Engine
 
   Run=nil # Abstract class
 
-  def exec(code)
+  def eval code
     return if (code=code.to_s.strip).length==0
     result=say code
     result={'err'=>'Invalid JS result'} unless Hash===result
@@ -21,28 +21,28 @@ class ExecJS::Xtrn::Engine
   PathX << /^[.]{0,2}\\|^\w:\S/ if Gem.win_platform?
 
   def load code
-    exec PathX.find{|re| re.match code} ? File.read(code) : code
+    eval PathX.find{|re| re.match code} ? File.read(code) : code
   end
 
-  def eval(code)
+  def exec code
     return if (code=code.to_s.strip).length==0
-    exec "return eval(#{JSON.generate([code])[1...-1]})"
+    eval "new Function(#{JSON.generate([code])[1...-1]})()"
   end
 
-  def call(fn, *args)
+  def call fn, *args
     eval "(#{fn}).apply(this, #{JSON.dump args})"
   end
 
-  def self.exec(code)
+  def self.exec code
     new.exec code
   end
 
-  def self.eval(code)
+  def self.eval code
     new.eval code
   end
 
-  def self.compile(code='')
-    new.tap{|ctx| ctx.exec code}
+  def self.compile code=''
+    new.tap{|ctx| ctx.eval code}
   end
 
   def self.load code
