@@ -21,7 +21,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
 
   Valid = valid?
 
-  def exec code
+  def eval code
     return if (code=code.to_s.strip).length==0
     result = nil
     delta={
@@ -31,7 +31,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
       t: Time.now # time spent
     }
     begin
-      result = parse vm.eval "new Function(#{JSON.dump code})()"
+      result = parse vm.eval code
     rescue WIN32OLERuntimeError=>e
       raise Error.new e
     ensure
