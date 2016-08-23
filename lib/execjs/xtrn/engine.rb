@@ -9,11 +9,9 @@ class ExecJS::Xtrn::Engine
 
   Run=nil # Abstract class
 
-  @stats=@@stats={c: 0}
-
   def exec(code)
     return if (code=code.to_s.strip).length==0
-    result=child.say code
+    result=say code
     result={'err'=>'Invalid JS result'} unless Hash===result
     raise Error, result['err'] if result['err']
     result['ok']
@@ -61,14 +59,30 @@ class ExecJS::Xtrn::Engine
 
   private
 
+  def self.class_stats increment = 1
+    s = @stats ||= {c: 0}
+    s[:c] += increment
+    s
+  end
+
+  def self.bear
+    raise NotImplementedError, self unless self::Run
+    ExecJS::Xtrn::Child.new self::Run
+  end
+
+  def self.child
+    bear.tap {|c| c.stats self.class_stats, ExecJS::Xtrn::Engine.class_stats}
+  end
+
   def child
     return @child if @child
-    raise NotImplementedError, self.class unless self.class::Run
-    @child=child=ExecJS::Xtrn::Child.new(self.class::Run)
-    child.stats @stats={}, @@stats, classStats=self.class.class_eval{@stats||={c: 0}}
-    @@stats[:c]+=1
-    classStats[:c]+=1
-    child
+    c = self.class.child
+    c.stats @stats = {}
+    @child = c
+  end
+
+  def say code
+    child.say code
   end
 
   def initialize

@@ -1,23 +1,25 @@
 require_relative 'shagi'
 
-class TestChild < Shagi
+class TestVm < Shagi
 
-  Children=[M::Node, M::Wsh]
+  Children=[M::Nvm, M::Wvm]
 
   def say(code)
-    @child.say code
+    @child.say vm: @vm, js: code
   end
 
   def self.build
-    Children.each  do |ch|
+    Children.each do |ch|
       valid = ch::Valid
+      child = ch.bear if valid
       (1..Spawn).each do |n|
-        child = ch.bear if valid
+        vm = child.say(vm: 0)['vm'] if valid
         prefix = "test_#{ch.name.split(/\W+/).last}[#{n}]"
         shagi.each do |k, v|
           define_method prefix + v do
             skip unless valid
             @child = child
+            @vm = vm
             send k
           end
         end
