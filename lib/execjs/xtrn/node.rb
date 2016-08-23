@@ -12,7 +12,7 @@ class ExecJS::Xtrn::Node < ExecJS::Xtrn::Engine
   def self.valid?
     Names.each do |n|
       Run[:args][0] = n
-      return true if {"ok"=>42} === bear.say('return 7*6') rescue nil
+      return true if {"ok"=>42} === bear.say('7*6') rescue nil
     end
     Run[:args][0]='!'
     false
