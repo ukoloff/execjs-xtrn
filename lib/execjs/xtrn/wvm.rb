@@ -8,12 +8,12 @@ class ExecJS::Xtrn::Wvm < ExecJS::Xtrn::Wsh
 
   # Force 32-bit cscript
   def self.patch64
-    return unless Gem.win_platform?
-    return unless File.exist? exe =
-      File.join(ENV['windir'], 'syswow64/cscript.exe')
     args = Run[:args].dup
-    args[0] = exe
-    @run32 = Run.merge args: args
+    exe = File.join ENV['windir'], 'syswow64/cscript.exe'
+    args[0] = exe if File.exists? exe
+    args.pop
+    args.push 'replvm.js'
+    Run.merge args: args
   end
-  Run = @run32 if self.patch64
+  Run = self.patch64 if Valid
 end
