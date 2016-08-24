@@ -10,8 +10,8 @@ class TestEngine < Minitest::Test
   M::Engine::Preload=[]
 
   def shag_methods
-    refute @engine.exec <<-EOJ
-      fib = function(n)
+    refute @engine.eval <<-EOJ
+      function fib(n)
       {
         return n<2 ? 1 : fib(n-1)+fib(n-2)
       }
@@ -78,7 +78,7 @@ class TestEngine < Minitest::Test
 
   def klas_compile
     x=@class.compile <<-EOJ
-      inc = function(x)
+      function inc(x)
       {
         return x+1
       }

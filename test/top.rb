@@ -15,7 +15,7 @@ class TestTop < Minitest::Test
 
   def test_compile
     ctx=ExecJS.compile <<-EOJ
-      dec = function(i)
+      function dec(i)
       {
         return i-1
       }
@@ -25,7 +25,7 @@ class TestTop < Minitest::Test
 
   def test_stats
     ctx=ExecJS.compile <<-EOJ
-      summa = function(n)
+      function summa(n)
       {
         var r=0
         for(var i = 1; i<=n; i++)
