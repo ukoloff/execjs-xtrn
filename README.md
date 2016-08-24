@@ -215,6 +215,11 @@ To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh
 Path to [this polyfill](lib/execjs/wsh/es5.js) is available as
 `ExecJS::Xtrn::Wsh::ES5` constant.
 
+In addition, only Wsh engine have JSON polyfill applied to it.
+Wvm and Ole engines don't know JSON,
+and if it's needed, one have preload json2 polyfill,
+available at ExecJS::Xtrn::Engine::Json2.
+
 Gem [coffee-script](https://rubygems.org/gems/coffee-script) since v2.4.0 introduces another incompatibility:
 it silently creates global function. This approach works in regular ExecJS but fails in ExecJS::Xtrn.
 As a workaround pin `coffee-script` gem version to 2.3.0.

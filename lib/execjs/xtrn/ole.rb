@@ -44,8 +44,6 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
 
   private
 
-  Json2 = File.expand_path('../../wsh/json2.js', __FILE__)
-
   def vm
     return @vm if @vm
     @statz = [

@@ -5,6 +5,8 @@ end
 
 class ExecJS::Xtrn::Engine
 
+  Json2 = File.expand_path('../../wsh/json2.js', __FILE__)
+
   Error = ExecJS::Xtrn::Error
 
   Run=nil # Abstract class
