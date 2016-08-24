@@ -194,23 +194,35 @@ get `/rails/jsx.json` or `/rails/jsx.html`.
 
 ## Compatibilty
 
-Not every JavaScript code behaves identically in ExecJS and ExecJS::Xtrn. In most cases it depends on how
-global JavaScript variables are used. For most modern code it is the same though.
+Not every JavaScript code behaves identically in ExecJS and ExecJS::Xtrn.
 
-As a rule of thumb, JavaScript code must survive after wrapping in anonymous function (`(function(){...})()`).
+First implementations of ExecJS::Xtrn tried to mimic behaviour of ExecJS'
+external runtime. That caused some troubles with global variables.
+For instance,
+[coffee-script](https://rubygems.org/gems/coffee-script) since v2.4.0
+and
+[uglifier](https://github.com/lautis/uglifier) from v3
+started to use global scoped functions.
+Due to this one had to pin their versions for use with ExecJS::Xtrn.
 
-For instance, old versions of `handlebars_assets` didn't work
-in ExecJS::Xtrn (and worked in ExecJS).
+Since v2 ExecJS::Xtrn was refactored according to ExecJS' therubyracer engine.
+Now they are almost identical in most practical cases.
 
 The following packages have been tested to run under ExecJS::Xtrn out-of-box:
 
-  * [CoffeeScript](http://coffeescript.org/) via [coffee-script](https://rubygems.org/gems/coffee-script) and [coffee-rails](https://rubygems.org/gems/coffee-rails) gems
-  * [UglifyJS2](https://github.com/mishoo/UglifyJS2) via [uglifier](https://github.com/lautis/uglifier)
-  * [Handlebars](http://handlebarsjs.com/) via [handlebars_assets](https://github.com/leshill/handlebars_assets) gem
+  * [CoffeeScript](http://coffeescript.org/)
+    via [coffee-script](https://rubygems.org/gems/coffee-script)
+    and [coffee-rails](https://rubygems.org/gems/coffee-rails) gems
+  * [UglifyJS2](https://github.com/mishoo/UglifyJS2)
+    via [uglifier](https://github.com/lautis/uglifier)
+  * [Handlebars](http://handlebarsjs.com/)
+    via [handlebars_assets](https://github.com/leshill/handlebars_assets) gem
 
-CoffeeScript since v1.9.0 introduces new incompatibility:
-it uses `Object.create` that is missing from WSH.
-To fix it, `Object.create` was manually defined in ExecJS::Xtrn::Wsh
+CoffeeScript since v1.9.0 introduced new incompatibility:
+it uses `Object.create` that is missing from WSH
+(which is ES3, while everyhing else is ES5).
+To fix it, `Object.create` and some other methods
+were manually defined in ExecJS::Xtrn::Wsh
 (sort of [ExecJS::Xtrn::Wsh::Preload](#preloading)).
 Path to [this polyfill](lib/execjs/wsh/es5.js) is available as
 `ExecJS::Xtrn::Wsh::ES5` constant.
@@ -219,12 +231,7 @@ In addition, only Wsh engine have JSON polyfill applied to it.
 Wvm and Ole engines don't know JSON,
 and if it's needed, one have preload json2 polyfill,
 available at ExecJS::Xtrn::Engine::Json2.
-
-Gem [coffee-script](https://rubygems.org/gems/coffee-script) since v2.4.0 introduces another incompatibility:
-it silently creates global function. This approach works in regular ExecJS but fails in ExecJS::Xtrn.
-As a workaround pin `coffee-script` gem version to 2.3.0.
-
-Later [uglifier](https://github.com/lautis/uglifier) from v3 started to use globals either. Pin it to '~> 2'.
+(Node and Nvm both have native JSON implementation)
 
 ## Testing
 
