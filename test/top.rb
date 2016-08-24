@@ -90,7 +90,7 @@ class TestTop < Minitest::Test
 end
 
 class FakeEngine < ExecJS::Xtrn::Engine
-  def exec(s='')
+  def eval(s='')
     @@n||=0
     @@n+=1
   end
