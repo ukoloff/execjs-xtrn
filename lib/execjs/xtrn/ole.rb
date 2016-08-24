@@ -76,10 +76,9 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
   end
 
   def parse result
-    WIN32OLE===result ?
-      JSON.parse(json.run 'jsonDump', result)
-    :
-      result
+    return result unless WIN32OLE===result
+    result = json.run 'jsonDump', result
+    String===result ? JSON.parse(result) : result
   end
 
 end
