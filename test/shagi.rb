@@ -25,8 +25,8 @@ class Shagi < Minitest::Test
   end
 
   def shag_math
-    treba_ok 42, 'return 6*7'
-    treba_ok 3,  'return Math.round(Math.PI)'
+    treba_ok 42, '6*7'
+    treba_ok 3,  'Math.round(Math.PI)'
   end
 
   Chars='Япония, 中华, Russia'
@@ -37,14 +37,14 @@ class Shagi < Minitest::Test
       var s='#{Chars}'
       var r=[]
       for(var i=0; i<s.length; i++) r.push(s.charCodeAt(i))
-      return r
+      r
     EOJ
 
     treba_ok Chars, <<-EOJ
       var c=#{Codes}
       var s=''
       for(var i=0; i<c.length; i++) s+=String.fromCharCode(c[i])
-      return s
+      s
     EOJ
   end
 
@@ -57,17 +57,17 @@ class Shagi < Minitest::Test
 
   def shag_null
     assert_equal say(''), {}
-    treba_ok nil, 'return null'
+    treba_ok nil, 'null'
   end
 
   def shag_vars
     treba_err 'localVar'
-    say 'var localVar=1'
-    treba_err 'localVar'
+    say "var localVar=#{v=rand 1000}"
+    treba_ok v, 'localVar'
 
     treba_err 'globalVar'
     say "globalVar=#{v=rand 1000}"
-    treba_ok v, 'return globalVar'
+    treba_ok v, 'globalVar'
   end
 
   def shag_stats
@@ -85,15 +85,15 @@ class Shagi < Minitest::Test
   end
 
   def shag_es5
-    treba_ok 7, 'return Object.create({a: 7}).a'
-    treba_ok ['one', 'two'], 'return Object.keys({one: 1, two: 2})'
-    treba_ok 2, 'return [5, 6, 7, 8].indexOf(7)'
-    treba_ok -1, 'return [5, 6, 7, 8].indexOf(3)'
-    treba_ok [1,3], 'return [1, 2, 3, 4].filter(function(n){return n&1})'
+    treba_ok 7, 'Object.create({a: 7}).a'
+    treba_ok ['one', 'two'], 'Object.keys({one: 1, two: 2})'
+    treba_ok 2, '[5, 6, 7, 8].indexOf(7)'
+    treba_ok -1, '[5, 6, 7, 8].indexOf(3)'
+    treba_ok [1,3], '[1, 2, 3, 4].filter(function(n){return n&1})'
     treba_ok 'pqr', <<-EOJ
       var s=''
       'p q r'.split(' ').forEach(function(n){s+=n})
-      return s
+      s
     EOJ
   end
 
