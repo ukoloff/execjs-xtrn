@@ -41,10 +41,7 @@ class Shagi < Minitest::Test
     EOJ
 
     treba_ok Chars, <<-EOJ
-      var c=#{Codes}
-      var s=''
-      for(var i=0; i<c.length; i++) s+=String.fromCharCode(c[i])
-      s
+      String.fromCharCode(#{Codes * ', '})
     EOJ
   end
 
