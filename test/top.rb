@@ -83,7 +83,8 @@ class TestTop < Minitest::Test
         end * ', '
       end * "\n"
       puts z
-      AppVeyor::Worker.message "Compilations: #{s['Engine'][:n]}", z
+      AppVeyor::Worker.message "Compilations: #{s['Engine'][:n]}",
+        z if defined? AppVeyor::Worker
     end
   end
 
