@@ -4,13 +4,16 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/tw7av89nj591fg8w?svg=true)](https://ci.appveyor.com/project/ukoloff/execjs-xtrn)
 [![Gem Version](https://badge.fury.io/rb/execjs-xtrn.svg)](http://badge.fury.io/rb/execjs-xtrn)
 
-Drop-in replacement for ExecJS. The latter spawns separate process for every JavaScript compilation
+Drop-in replacement for ExecJS.
+The latter spawns separate process for every JavaScript compilation
 (when using external runtime),
-while ExecJS::Xtrn spawn long running JavaScript process and communicates with it via stdin & stderr.
+while ExecJS::Xtrn spawn long running JavaScript process
+and communicates with it via stdin & stderr.
 
 This is just proof of concept, not suitable for production.
 
-When not on MS Windows, one definitely should use ExecJS with excellent `therubyracer` gem instead.
+When not on MS Windows,
+one definitely should use ExecJS with excellent `therubyracer` gem instead.
 
 ## Installation
 
@@ -55,7 +58,8 @@ So, there exist *six* engines:
 
 Nvm engine has nothing common with [nvm](https://github.com/creationix/nvm).
 
-All engines autodetect their availability at startup (on `require 'execjs/xtrn'`) and sets `Valid` constants.
+All engines autodetect their availability at startup
+(on `require 'execjs/xtrn'`) and sets `Valid` constants.
 Eg on MS Windows ExecJS::Xtrn::Wsh::Valid = true, on Linux - false
 
 Ole engine is unavailable for 64-bit Ruby
@@ -72,7 +76,7 @@ Default engine can be shown/changed at any moment with
 `ExecJS::Xtrn.engine` accessor, eg
 
 ```ruby
-ExecJS::Xtrn.engine=ExecJS::Xtrn::Node
+ExecJS::Xtrn.engine = ExecJS::Xtrn::Node
 ```
 
 ## API
@@ -81,31 +85,34 @@ ExecJS::Xtrn is primarily designed to power other gems that use popular ExecJS.
 
 But it has his own API (similar to ExecJS' API) and can be used itself.
 
-In general one should create instance of an Engine and then feed it with JavaScript code:
+In general one should create instance of an Engine
+and then feed it with JavaScript code:
 
 ```ruby
-ctx=ExecJS::Xtrn::Wsh.new
-ctx.exec 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
+ctx = ExecJS::Xtrn::Wsh.new
+ctx.exec 'function fact(n) {return n>1 ? n * fact(n-1) : 1}'
 puts "10! = #{ctx.call 'fact', 10}"
 ```
 Every execution context has four methods:
-  * exec(`code`) -  executes arbitrary JavaScript code. To get result `return` must be called
-  * load(`code`) or load(`path`) - exec that can load its code from file
-  * eval(`expression`) - evaluate JavaScript expression. `return` is not needed
+  * eval(`expression`) - evaluate JavaScript expression
+  * exec(`code`) -  executes arbitrary JavaScript code.
+    To get result `return` must be called
+  * load(`code`) or load(`path`) - eval that can load its code from file
   * call(`function`, arguments...) - special form of eval for function call
 
 There are `exec` and `eval` methods in Engine class,
 they just create brand new execution context,
 pass argument to it, destroy that context and return its result.
-Using these class methods is not recommended, since it's just what ExecJS does
-(except for Nvm engine).
+Using these class methods is not recommended,
+since it's just what ExecJS does
+(except for VM engines).
 
 Engine class also has `compile` method that combines `new` and `eval`
 and returns execution context.
 This is how ExecJS is used in most cases.
 
 ```ruby
-ctx=ExecJS::Xtrn::Wsh.compile 'fact = function(n){return n>1 ? n*fact(n-1) : 1}'
+ctx = ExecJS::Xtrn::Wsh.compile 'function fact(n){return n>1 ? n*fact(n-1) : 1}'
 puts "10! = #{ctx.call 'fact', 10}"
 ```
 And `load` methods is likewise combination of `new`+`load`,
@@ -117,58 +124,64 @@ or `../` (but not from `//`). On Windows `\` and `C:` can be also used.
 
 Finally ExecJS::Xtrn patches ExecJS and installs those 4 class methods
 (`exec`, `eval`, `compile` and `load`) in it.
-So, `ExecJS.compile` is `ExecJS::Xtrn::Nvm.compile` if Nvm engine is available.
+So, `ExecJS.compile` is `ExecJS::Xtrn::Nvm.compile`
+if Nvm engine is available.
 
 ## Preloading
 
-Sometimes it's neccesary to initialize all execution contexts before passing
+Sometimes it's neccesary to initialize
+all execution contexts before passing
 code to them.
-For instance, add some standard JavaScript methods missing in Wsh engine.
+For instance, add some standard JavaScript methods
+missing in Wsh engine.
 
 It can be done by setting Preload constant on engine class.
 
 ```ruby
-ExecJS::Xtrn::Wsh::Preload='./lib/js/map.js'
+ExecJS::Xtrn::Wsh::Preload = './lib/js/map.js'
 ```
 or maybe
 
 ```ruby
-ExecJS::Xtrn::Wsh::Preload=[
+ExecJS::Xtrn::Wsh::Preload = [
   './lib/js/map.js',
   './lib/js/keys.js',
   'console={log: function(){WScript.Echo([].slice.call(arguments).join(" "))}}'
   ]
 # Yes, console.log is avaialable in Wsh now!
-# And yes, console.log can be used in ExecJS::Xtrn!
+# And yes, console.log can be used in ExecJS::Xtrn! (Not VM engines though)
 ```
 You can add preload scripts to any engine or to Engine base class.
 They will be loaded according to inheritance:
 Engine::Preload will be used by all engines,
-Node::Preload is for Node and Nvm, while Nvm::Preload is for Nvm only.
+Node::Preload is for Node and Nvm,
+while Nvm::Preload is for Nvm only.
 
 ## Overriding ExecJS
 
-Sometimes ExecJS is required after ExecJS::Xtrn. In that case you can call ExecJS::Xtrn.init and
+Sometimes ExecJS is required after ExecJS::Xtrn.
+In that case you can call ExecJS::Xtrn.init and
 it will overwrite ExecJS' methods again.
 
-To test whether JavaScript is served by ExecJS::Xtrn, it's convenient to look at ExecJS::Xtrn statistics.
+To test whether JavaScript is served by ExecJS::Xtrn,
+it's convenient to look at ExecJS::Xtrn statistics.
 
 ## Statistics
 
 Every engine gathers it's own usage statistics. Eg:
 
 ```ruby
-> ExecJS::Xtrn::Node.stats # or ExecJS::Xtrn::Nvm.stats or ExecJS::Xtrn::Wsh.stats
+> ExecJS::Xtrn::Node.stats # or ExecJS::Xtrn::Nvm.stats etc.
 => {:c=>2, :n=>2, :o=>8, :i=>6, :t=>0.131013}
 ```
 Here:
-  * c = number of child processes spawned (for Nvm c should always be 1)
+  * c = number of child processes spawned (for VM c should always be 1)
   * n = number of request made
   * o = bytes sent to child process(es)
   * i = bytes got from child process(es)
   * t = seconds spent communicating with child process(es)
-  * m = number of VMs created (Nvm only)
-  * x = number of VMs destroyed (Nvm only)
+  * m = number of VMs created (VM only)
+  * x = number of VMs destroyed (VM only)
 
 ExecJS::Xtrn.stats combines statistics for all its engines, even unused.
 
@@ -177,11 +190,11 @@ ExecJS.stats shows statistics for current engine only.
 Every execution context has his own statistics too. Eg
 
 ```ruby
-s=ExecJS::Xtrn::Nvm.compile '...'
+s = ExecJS::Xtrn::Nvm.compile '...'
 s.exec '...'
 s.stats
 ```
-but c (and m, x) fields are omitted there.
+but c (as well as m and x) fields are omitted there.
 
 If ExecJS::Xtrn detects it is run under Ruby on Rails,
 it installs additional path `/rails/jsx' to display its statistics
@@ -189,8 +202,9 @@ it installs additional path `/rails/jsx' to display its statistics
 
 It is one more reason not to use ExecJS::Xtrn in production mode ;-)
 
-By default statistics is output in YAML format, but you can
-get `/rails/jsx.json` or `/rails/jsx.html`.
+By default statistics is output in YAML format,
+but you can get also `/rails/jsx.json`
+or `/rails/jsx.html`.
 
 ## Compatibilty
 
@@ -205,7 +219,8 @@ and
 started to use global scoped functions.
 Due to this one had to pin their versions for use with ExecJS::Xtrn.
 
-Since v2 ExecJS::Xtrn was refactored according to ExecJS' therubyracer engine.
+Since v2 ExecJS::Xtrn was refactored
+according to ExecJS' therubyracer engine.
 Now they are almost identical in most practical cases.
 
 The following packages have been tested to run under ExecJS::Xtrn out-of-box:
@@ -220,7 +235,7 @@ The following packages have been tested to run under ExecJS::Xtrn out-of-box:
 
 CoffeeScript since v1.9.0 introduced new incompatibility:
 it uses `Object.create` that is missing from WSH
-(which is ES3, while everyhing else is ES5).
+(which is ES3, while everything else is ES5).
 To fix it, `Object.create` and some other methods
 were manually defined in ExecJS::Xtrn::Wsh
 (sort of [ExecJS::Xtrn::Wsh::Preload](#preloading)).
@@ -248,13 +263,13 @@ The testing itself is
 bundle exec rake
 ```
 
-And `bundle exec` may be ommited in most cases.
+And `bundle exec` may be omitted in most cases.
 
 ## Credits
 
   * [ExecJS](https://github.com/sstephenson/execjs)
   * [therubyracer](https://github.com/cowboyd/therubyracer)
   * [Node.js](http://nodejs.org/)
-  * [Windows Script Host](http://en.wikipedia.org/wiki/Windows_Script_Host)
+  * [Windows Script Host](https://en.wikipedia.org/wiki/Windows_Script_Host)
   * [Travis CI](https://travis-ci.org/)
   * [AppVeyor](http://www.appveyor.com/)
