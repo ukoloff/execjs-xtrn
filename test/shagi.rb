@@ -84,6 +84,8 @@ class Shagi < Minitest::Test
   def shag_es5
     treba_ok 7, 'Object.create({a: 7}).a'
     treba_ok ['one', 'two'], 'Object.keys({one: 1, two: 2})'
+    treba_ok true, 'Array.isArray([3, 14, 159])'
+    treba_ok false, 'Array.isArray(27)'
     treba_ok 2, '[5, 6, 7, 8].indexOf(7)'
     treba_ok -1, '[5, 6, 7, 8].indexOf(3)'
     treba_ok [1,3], '[1, 2, 3, 4].filter(function(n){return n&1})'
