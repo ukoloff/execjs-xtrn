@@ -17,7 +17,7 @@ module ExecJS::Xtrn
     class << ExecJS
       self
     end.instance_eval do
-      %i(eval exec compile).each do |m|
+      %w(eval exec compile).each do |m|
         define_method m  do |*args|
           this.engine.send m, *args
         end
