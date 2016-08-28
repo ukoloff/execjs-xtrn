@@ -114,6 +114,16 @@ class TestEngine < Minitest::Test
     end
   end
 
+  def klas_uglify
+    eng = M.engine
+    M.engine = @class
+    u=Uglifier.new
+    assert u.compile('a( 1 + 2 * 3 )')['a(7)']
+    assert u.compile('b( 1 ? x : y )')['b(x)']
+  ensure
+    M.engine = eng
+  end
+
   def self.build
     Engines.each do |klass|
       valid = klass::Valid

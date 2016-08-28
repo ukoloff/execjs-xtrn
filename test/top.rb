@@ -54,12 +54,6 @@ class TestTop < Minitest::Test
     assert CoffeeScript.compile('a b c', bare: true)['a(b(c))']
   end
 
-  def test_uglify
-    u=Uglifier.new
-    assert u.compile('a( 1 + 2 * 3 )')['a(7)']
-    assert u.compile('b( 1 ? x : y )')['b(x)']
-  end
-
   def test_switch
     assert_equal 42, ExecJS.eval('7*6')
     e=ExecJS::Xtrn.engine
