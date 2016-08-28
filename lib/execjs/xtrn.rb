@@ -2,23 +2,24 @@ require_relative "xtrn/rails"
 
 module ExecJS::Xtrn
 
-  Engines=[Nvm, Node, Wsh, Wvm, Ole]
+  Engines = [Nvm, Node, Wsh, Wvm, Ole]
 
   class << self
     attr_accessor :engine
   end
 
   # Find best available Engine
-  self.engine=Engines.find{|k| k::Valid} || Engine
+  self.engine = Engines.find{|k| k::Valid} || Engine
 
   # Install into ExecJS
   def self.init
-    slf=self
-    sc=(class << ExecJS; self ;end)
-    Engine.methods(false).each do |m|
-      sc.instance_eval do
-        define_method(m) do |*args|
-          slf.engine.send m, *args
+    this = self
+    class << ExecJS
+      self
+    end.instance_eval do
+      %i(eval exec compile).each do |m|
+        define_method m  do |*args|
+          this.engine.send m, *args
         end
       end
     end

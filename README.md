@@ -122,8 +122,8 @@ it is `compile` that can load its code from file.
 is code or path by first symbols of it. So, start path with `/`, `./`
 or `../` (but not from `//`). On Windows `\` and `C:` can be also used.
 
-Finally ExecJS::Xtrn patches ExecJS and installs those 4 class methods
-(`exec`, `eval`, `compile` and `load`) in it.
+Finally ExecJS::Xtrn patches ExecJS and installs 3 class methods
+(`exec`, `eval` and `compile`) in it.
 So, `ExecJS.compile` is `ExecJS::Xtrn::Nvm.compile`
 if Nvm engine is available.
 
@@ -184,8 +184,6 @@ Here:
   * x = number of VMs destroyed (VM only)
 
 ExecJS::Xtrn.stats combines statistics for all its engines, even unused.
-
-ExecJS.stats shows statistics for current engine only.
 
 Every execution context has his own statistics too. Eg
 
