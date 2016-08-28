@@ -53,6 +53,7 @@ class ExecJS::Xtrn::Ole < ExecJS::Xtrn::Wsh
     ]
     vm = WIN32OLE.new 'ScriptControl'
     vm.Language = 'JScript'
+    vm.addCode File.read Json2
     vm.addCode File.read ES5
     @vm = vm
   end

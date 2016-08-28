@@ -240,11 +240,8 @@ were manually defined in ExecJS::Xtrn::Wsh
 Path to [this polyfill](lib/execjs/wsh/es5.js) is available as
 `ExecJS::Xtrn::Wsh::ES5` constant.
 
-In addition, only Wsh engine have JSON polyfill applied to it.
-Wvm and Ole engines don't know JSON,
-and if it's needed, one have preload json2 polyfill,
-available at ExecJS::Xtrn::Engine::Json2.
-(Node and Nvm both have native JSON implementation)
+[JSON polyfill](lib/execjs/wsh/json2.js) is also available as
+`ExecJS::Xtrn::Engine::Json2` constant.
 
 ## Testing
 
